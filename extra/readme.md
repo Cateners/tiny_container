@@ -41,6 +41,10 @@ Turnip驱动。根据[这里](https://github.com/xDoge26/proot-setup/issues/26#i
 
 快捷指令的彩蛋。原本放在容器里，但显然放这里更为合适
 
+#### extra/tiny_virtual_mic
+
+麦克风客户端。实现见tiny_virtual_mic.c
+
 #### caj, edraw
 
 这些分别是cajviewer，亿图图示的补丁

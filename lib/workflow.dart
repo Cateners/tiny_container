@@ -368,8 +368,8 @@ class D {
     {"name":"卸载Octave", "command":"sudo apt autoremove --purge -y octave"},
     {"name":"安装WPS", "command":r"""sudo dpkg --configure -a && sudo aptss update && sudo aptss install -y wps-office"""},
     {"name":"卸载WPS", "command":"sudo apt autoremove --purge -y wps-office"},
-    {"name":"安装CAJViewer", "command":"wget https://download.cnki.net/net.cnki.cajviewer_1.3.20-1_arm64.deb -O /tmp/caj.deb && sudo apt update && sudo apt install -y /tmp/caj.deb && bash /home/tiny/.local/share/tiny/caj/postinst; rm /tmp/caj.deb"},
-    {"name":"卸载CAJViewer", "command":"sudo apt autoremove --purge -y net.cnki.cajviewer && bash /home/tiny/.local/share/tiny/caj/postrm"},
+    {"name":"安装CAJViewer", "command":"wget https://download.cnki.net/cajPackage/tongxinUOS/signed_cajviewer_9.5.0-25268_arm64.deb -O /tmp/caj.deb && sudo apt update && sudo apt install -y /tmp/caj.deb; rm /tmp/caj.deb"},
+    {"name":"卸载CAJViewer", "command":"sudo apt autoremove --purge -y cajviewer"},
     {"name":"安装亿图图示", "command":"wget https://cc-download.wondershare.cc/business/prd/edrawmax_13.1.0-1_arm64_binner.deb -O /tmp/edraw.deb && sudo apt update && sudo apt install -y /tmp/edraw.deb libidn12 && bash /home/tiny/.local/share/tiny/edraw/postinst; rm /tmp/edraw.deb"},
     {"name":"卸载亿图图示", "command":"sudo apt autoremove --purge -y edrawmax libldap-2.4-2"},
     {"name":"安装QQ", "command":"""wget \$(curl -s https://im.qq.com/rainbow/linuxQQDownload | grep -oP '"armDownloadUrl":{[^}]*"deb":"\\K[^"]+') -O /tmp/qq.deb && sudo apt update && sudo apt install -y /tmp/qq.deb && sed -i 's#Exec=/opt/QQ/qq %U#Exec=/opt/QQ/qq --no-sandbox %U#g' /usr/share/applications/qq.desktop; rm /tmp/qq.deb"""},
@@ -581,7 +581,12 @@ ln -sf ../applib/libexec_tar.so \$DATA_DIR/bin/tar
 ln -sf ../applib/libexec_virgl_test_server.so \$DATA_DIR/bin/virgl_test_server
 ln -sf ../applib/libexec_getifaddrs_bridge_server.so \$DATA_DIR/bin/getifaddrs_bridge_server
 ln -sf ../applib/libexec_pulseaudio.so \$DATA_DIR/bin/pulseaudio
+ln -sf ../applib/libacl.so \$DATA_DIR/lib/libacl.so
+ln -sf ../applib/libandroid-selinux.so \$DATA_DIR/lib/libandroid-selinux.so
+ln -sf ../applib/libattr.so \$DATA_DIR/lib/libattr.so
 ln -sf ../applib/libbusybox.so \$DATA_DIR/lib/libbusybox.so.1.37.0
+ln -sf ../applib/libiconv.so \$DATA_DIR/lib/libiconv.so
+ln -sf ../applib/libpcre2-8.so \$DATA_DIR/lib/libpcre2-8.so
 ln -sf ../applib/libtalloc.so \$DATA_DIR/lib/libtalloc.so.2
 ln -sf ../applib/libvirglrenderer.so \$DATA_DIR/lib/libvirglrenderer.so
 ln -sf ../applib/libepoxy.so \$DATA_DIR/lib/libepoxy.so
@@ -835,7 +840,7 @@ clear""");
   }
 
   static Future<void> launchXServer() async {
-    await X11Flutter.launchXServer("${G.dataPath}/containers/${G.currentContainer}/tmp", "${G.dataPath}/containers/${G.currentContainer}/usr/share/X11/xkb", [":4"]);
+    await X11Flutter.launchXServer("${G.dataPath}/containers/${G.currentContainer}/tmp", "${G.dataPath}/containers/${G.currentContainer}/usr/share/X11/xkb", [":4", "-extension", "MIT-SHM"]);
   }
 
   static Future<void> launchX11() async {

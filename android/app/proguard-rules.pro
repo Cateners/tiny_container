@@ -12,3 +12,6 @@
 # 保持 Termux X11 所有内容
 -keep class com.termux.x11.** { *; }
 -keepclassmembers class com.termux.x11.** { *; }
+
+
+-dontwarn javax.annotation.Nullable

@@ -19,10 +19,12 @@ fi
 
 echo "最新版本: $latest_version"
 
-hangover_url="https://github.com/AndreRH/hangover/releases/download/hangover-${latest_version}/hangover_${latest_version}_debian12_bookworm_arm64.tar"
+hangover_url="https://github.com/AndreRH/hangover/releases/download/hangover-${latest_version}/hangover_${latest_version}_debian13_trixie_arm64.tar"
 
 mirror_sites=(
-    "https://github.akams.cn/"
+    "https://gh-proxy.org/"
+    "https://cdn.gh-proxy.org/"
+    "https://edgeone.gh-proxy.org/"
     "https://gh.llkk.cc/"
     "https://github.moeyy.xyz/"
     "https://mirror.ghproxy.com/"
