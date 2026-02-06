@@ -618,7 +618,12 @@ sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""");
 pactl load-module module-null-sink sink_name=AndroidSink sink_properties=device.description="Android_Audio_Stream"
 pactl load-module module-remap-source master=AndroidSink.monitor source_name=AndroidMic source_properties=device.description="Android_Virtual_Mic"
 pkill -f tiny_virtual_mic
-tiny_virtual_mic $path AndroidSink &""");
+tiny_virtual_mic $path AndroidSink &
+sleep 0.5
+SINK_INPUT_ID=\$(LC_ALL=C pactl list sink-inputs | grep -B 20 "application.name = \\"AndroidStream\\"" | grep "Sink Input #" | awk '{print \$3}' | tr -d '#')
+if [ ! -z "\$SINK_INPUT_ID" ]; then
+    pactl move-sink-input \$SINK_INPUT_ID AndroidSink
+fi""");
                 G.pageIndex.value = 0;
               }
             } else {
