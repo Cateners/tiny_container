@@ -49,11 +49,9 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.fct.tiny"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk 28 // glob() version //proot version //ffmpeg_kit; flutter.minSdkVersion
-        targetSdk 28 //https://github.com/termux/termux-app/issues/1072; native; linker; flutter.targetSdkVersion
+        applicationId "com.fct.da_ripped_tiny_computer"
+        minSdk 28
+        targetSdk 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 

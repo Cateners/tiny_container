@@ -353,57 +353,57 @@ class D {
   ];
 
   //默认快捷指令
-  static const commands = [{"name":"检查更新并升级", "command":"sudo dpkg --configure -a && sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y"},
+  static const commands = [{"name":"检查更新并升级", "command":"sudo pacman -Syu --noconfirm && sudo pacman -Sc --noconfirm"},
     {"name":"查看系统信息", "command":"neofetch -L && neofetch --off"},
     {"name":"清屏", "command":"clear"},
     {"name":"中断任务", "command":"\x03"},
-    {"name":"安装图形处理软件Krita", "command":"sudo apt update && sudo apt install -y krita krita-l10n"},
-    {"name":"卸载Krita", "command":"sudo apt autoremove --purge -y krita krita-l10n"},
-    {"name":"安装视频剪辑软件Kdenlive", "command":"sudo apt update && sudo apt install -y kdenlive"},
-    {"name":"卸载Kdenlive", "command":"sudo apt autoremove --purge -y kdenlive"},
-    {"name":"安装科学计算软件Octave", "command":"sudo apt update && sudo apt install -y octave"},
-    {"name":"卸载Octave", "command":"sudo apt autoremove --purge -y octave"},
-    {"name":"安装WPS", "command":r"""cat << 'EOF' | sh && sudo dpkg --configure -a && sudo apt update && sudo apt install -y /tmp/wps.deb
+    {"name":"安装图形处理软件Krita", "command":"sudo pacman -S --noconfirm krita"},
+    {"name":"卸载Krita", "command":"sudo pacman -Rns --noconfirm krita"},
+    {"name":"安装视频剪辑软件Kdenlive", "command":"sudo pacman -S --noconfirm kdenlive"},
+    {"name":"卸载Kdenlive", "command":"sudo pacman -Rns --noconfirm kdenlive"},
+    {"name":"安装科学计算软件Octave", "command":"sudo pacman -S --noconfirm octave"},
+    {"name":"卸载Octave", "command":"sudo pacman -Rns --noconfirm octave"},
+    {"name":"安装WPS", "command":r"""cat << 'EOF' | sh && sudo pacman -U --noconfirm /tmp/wps.deb
 wget https://mirrors.sdu.edu.cn/spark-store/arm64-store/office/wps-office/wps-office_11.1.0.11720-fix3_arm64.deb -O /tmp/wps.deb
 EOF
 rm /tmp/wps.deb"""},
-    {"name":"卸载WPS", "command":"sudo apt autoremove --purge -y wps-office"},
-    {"name":"安装CAJViewer", "command":"wget https://download.cnki.net/cajPackage/tongxinUOS/signed_cajviewer_9.5.0-25268_arm64.deb -O /tmp/caj.deb && sudo apt update && sudo apt install -y /tmp/caj.deb; rm /tmp/caj.deb"},
-    {"name":"卸载CAJViewer", "command":"sudo apt autoremove --purge -y cajviewer"},
-    {"name":"安装亿图图示", "command":"wget https://cc-download.wondershare.cc/business/prd/edrawmax_13.1.0-1_arm64_binner.deb -O /tmp/edraw.deb && sudo apt update && sudo apt install -y /tmp/edraw.deb && bash /home/tiny/.local/share/tiny/edraw/postinst; rm /tmp/edraw.deb"},
-    {"name":"卸载亿图图示", "command":"sudo apt autoremove --purge -y edrawmax libldap-2.4-2"},
-    {"name":"安装QQ", "command":"""wget \$(curl -s https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js | grep -oP '"armDownloadUrl":{[^}]*"deb":"\\K[^"]+') -O /tmp/qq.deb && sudo apt update && sudo apt install -y /tmp/qq.deb && sed -i 's#Exec=/opt/QQ/qq %U#Exec=/opt/QQ/qq --no-sandbox %U#g' /usr/share/applications/qq.desktop; rm /tmp/qq.deb"""},
-    {"name":"卸载QQ", "command":"sudo apt autoremove --purge -y linuxqq"},
-    {"name":"安装微信", "command":"wget https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_arm64.deb -O /tmp/wechat.deb && sudo apt update && sudo apt install -y /tmp/wechat.deb && echo '安装完成。如果你使用微信只是为了传输文件，那么可以考虑使用支持SAF的文件管理器（如：质感文件），直接访问小小电脑所有文件。'; rm /tmp/wechat.deb"},
-    {"name":"卸载微信", "command":"sudo apt autoremove --purge -y wechat"},
-    {"name":"安装钉钉", "command":"""wget \$(curl -sw %{redirect_url} https://www.dingtalk.com/win/d/qd=linux_arm64) -O /tmp/dingtalk.deb && sudo apt update && sudo apt install -y /tmp/dingtalk.deb libglut3.12 libglu1-mesa && sed -i 's#\\./com.alibabainc.dingtalk#\\./com.alibabainc.dingtalk --no-sandbox#g' /opt/apps/com.alibabainc.dingtalk/files/Elevator.sh; rm /tmp/dingtalk.deb"""},
-    {"name":"卸载钉钉", "command":"sudo apt autoremove --purge -y com.alibabainc.dingtalk"},
-    {"name":"启用回收站", "command":"sudo apt update && sudo apt install -y gvfs && echo '安装完成, 重启软件即可使用回收站。'"},
-    {"name":"清理包管理器缓存", "command":"sudo apt clean"},
+    {"name":"卸载WPS", "command":"sudo pacman -Rns --noconfirm wps-office"},
+    {"name":"安装CAJViewer", "command":"wget https://download.cnki.net/cajPackage/tongxinUOS/signed_cajviewer_9.5.0-25268_arm64.deb -O /tmp/caj.deb && sudo pacman -U --noconfirm /tmp/caj.deb; rm /tmp/caj.deb"},
+    {"name":"卸载CAJViewer", "command":"sudo pacman -Rns --noconfirm cajviewer"},
+    {"name":"安装亿图图示", "command":"wget https://cc-download.wondershare.cc/business/prd/edrawmax_13.1.0-1_arm64_binner.deb -O /tmp/edraw.deb && sudo pacman -U --noconfirm /tmp/edraw.deb && bash /home/tiny/.local/share/tiny/edraw/postinst; rm /tmp/edraw.deb"},
+    {"name":"卸载亿图图示", "command":"sudo pacman -Rns --noconfirm edrawmax libldap-2.4-2"},
+    {"name":"安装QQ", "command":"""wget \$(curl -s https://cdn-go.cn/qq-web/im.qq.com_new/latest/rainbow/linuxConfig.js | grep -oP '"armDownloadUrl":{[^}]*"deb":"\\K[^"]+') -O /tmp/qq.deb && sudo pacman -U --noconfirm /tmp/qq.deb && sed -i 's#Exec=/opt/QQ/qq %U#Exec=/opt/QQ/qq --no-sandbox %U#g' /usr/share/applications/qq.desktop; rm /tmp/qq.deb"""},
+    {"name":"卸载QQ", "command":"sudo pacman -Rns --noconfirm linuxqq"},
+    {"name":"安装微信", "command":"wget https://dldir1v6.qq.com/weixin/Universal/Linux/WeChatLinux_arm64.deb -O /tmp/wechat.deb && sudo pacman -U --noconfirm /tmp/wechat.deb && echo '安装完成。如果你使用微信只是为了传输文件，那么可以考虑使用支持SAF的文件管理器（如：质感文件），直接访问小小电脑所有文件。'; rm /tmp/wechat.deb"},
+    {"name":"卸载微信", "command":"sudo pacman -Rns --noconfirm wechat"},
+    {"name":"安装钉钉", "command":"""wget \$(curl -sw %{redirect_url} https://www.dingtalk.com/win/d/qd=linux_arm64) -O /tmp/dingtalk.deb && sudo pacman -U --noconfirm /tmp/dingtalk.deb libglut3.12 libglu1-mesa && sed -i 's#\\./com.alibabainc.dingtalk#\\./com.alibabainc.dingtalk --no-sandbox#g' /opt/apps/com.alibabainc.dingtalk/files/Elevator.sh; rm /tmp/dingtalk.deb"""},
+    {"name":"卸载钉钉", "command":"sudo pacman -Rns --noconfirm com.alibabainc.dingtalk"},
+    {"name":"启用回收站", "command":"sudo pacman -S --noconfirm gvfs && echo '安装完成, 重启软件即可使用回收站。'"},
+    {"name":"清理包管理器缓存", "command":"sudo pacman -Scc --noconfirm"},
     {"name":"关机", "command":"stopvnc\nexit\nexit"},
     {"name":"???", "command":"timeout 8 cmatrix"}
   ];
 
   //默认快捷指令，英文版本
-  static const commands4En = [{"name":"Update Packages", "command":"sudo dpkg --configure -a && sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y"},
+  static const commands4En = [{"name":"Update Packages", "command":"sudo pacman -Syu --noconfirm && sudo pacman -Sc --noconfirm"},
     {"name":"System Info", "command":"neofetch -L && neofetch --off"},
     {"name":"Clear", "command":"clear"},
     {"name":"Interrupt", "command":"\x03"},
-    {"name":"Install Painting Program Krita", "command":"sudo apt update && sudo apt install -y krita krita-l10n"},
-    {"name":"Uninstall Krita", "command":"sudo apt autoremove --purge -y krita krita-l10n"},
-    {"name":"Install KDE Non-Linear Video Editor", "command":"sudo apt update && sudo apt install -y kdenlive"},
-    {"name":"Uninstall Kdenlive", "command":"sudo apt autoremove --purge -y kdenlive"},
-    {"name":"Install LibreOffice", "command":"sudo apt update && sudo apt install -y libreoffice"},
-    {"name":"Uninstall LibreOffice", "command":"sudo apt autoremove --purge -y libreoffice"},
-    {"name":"Install WPS", "command":r"""cat << 'EOF' | sh && sudo dpkg --configure -a && sudo apt update && sudo apt install -y /tmp/wps.deb
+    {"name":"Install Painting Program Krita", "command":"sudo pacman -S --noconfirm krita"},
+    {"name":"Uninstall Krita", "command":"sudo pacman -Rns --noconfirm krita"},
+    {"name":"Install KDE Non-Linear Video Editor", "command":"sudo pacman -S --noconfirm kdenlive"},
+    {"name":"Uninstall Kdenlive", "command":"sudo pacman -Rns --noconfirm kdenlive"},
+    {"name":"Install LibreOffice", "command":"sudo pacman -S --noconfirm libreoffice"},
+    {"name":"Uninstall LibreOffice", "command":"sudo pacman -Rns --noconfirm libreoffice"},
+    {"name":"Install WPS", "command":r"""cat << 'EOF' | sh && sudo pacman -U --noconfirm /tmp/wps.deb
 wget https://github.com/tiny-computer/third-party-archives/releases/download/archives/wps-office_11.1.0.11720_arm64.deb -O /tmp/wps.deb
 EOF
 rm /tmp/wps.deb"""},
-    {"name":"Uninstall WPS", "command":"sudo apt autoremove --purge -y wps-office"},
-    {"name":"Install EdrawMax", "command":"""wget https://cc-download.wondershare.cc/business/prd/edrawmax_13.1.0-1_arm64_binner.deb -O /tmp/edraw.deb && sudo apt update && sudo apt install -y /tmp/edraw.deb && bash /home/tiny/.local/share/tiny/edraw/postinst && sudo sed -i 's/<Language V="cn"\\/>/<Language V="en"\\/>/g' /opt/apps/edrawmax/config/settings.xml; rm /tmp/edraw.deb"""},
-    {"name":"Uninstall EdrawMax", "command":"sudo apt autoremove --purge -y edrawmax libldap-2.4-2"},
-    {"name":"Enable Recycle Bin", "command":"sudo apt update && sudo apt install -y gvfs && echo 'Restart the app to use Recycle Bin.'"},
-    {"name":"Clean Package Cache", "command":"sudo apt clean"},
+    {"name":"Uninstall WPS", "command":"sudo pacman -Rns --noconfirm wps-office"},
+    {"name":"Install EdrawMax", "command":"""wget https://cc-download.wondershare.cc/business/prd/edrawmax_13.1.0-1_arm64_binner.deb -O /tmp/edraw.deb && sudo pacman -U --noconfirm /tmp/edraw.deb && bash /home/tiny/.local/share/tiny/edraw/postinst && sudo sed -i 's/<Language V="cn"\\/>/<Language V="en"\\/>/g' /opt/apps/edrawmax/config/settings.xml; rm /tmp/edraw.deb"""},
+    {"name":"Uninstall EdrawMax", "command":"sudo pacman -Rns --noconfirm edrawmax"},
+    {"name":"Enable Recycle Bin", "command":"sudo pacman -S --noconfirm gvfs && echo 'Restart the app to use Recycle Bin.'"},
+    {"name":"Clean Package Cache", "command":"sudo pacman -Scc --noconfirm"},
     {"name":"Power Off", "command":"stopvnc\nexit\nexit"},
     {"name":"???", "command":"timeout 8 cmatrix"}
   ];
@@ -485,7 +485,7 @@ WINEDLLOVERRIDES="d3d8=b,d3d9=b,d3d10core=b,d3d11=b,dxgi=b" wine reg add 'HKEY_C
     {"name": "F12", "key": TerminalKey.f12},
   ];
 
-  static const String boot = "\$DATA_DIR/bin/proot -H --change-id=1000:1000 --pwd=/home/tiny --rootfs=\$CONTAINER_DIR --mount=/system --mount=/apex --mount=/sys --mount=/data --kill-on-exit --mount=/storage --sysvipc -L --link2symlink --mount=/proc --mount=/dev --mount=\$CONTAINER_DIR/tmp:/dev/shm --mount=/dev/urandom:/dev/random --mount=/proc/self/fd:/dev/fd --mount=/proc/self/fd/0:/dev/stdin --mount=/proc/self/fd/1:/dev/stdout --mount=/proc/self/fd/2:/dev/stderr --mount=/dev/null:/dev/tty0 --mount=/dev/null:/proc/sys/kernel/cap_last_cap --mount=/storage/self/primary:/media/sd --mount=\$DATA_DIR/share:/home/tiny/公共 --mount=\$DATA_DIR/tiny:/home/tiny/.local/share/tiny --mount=/storage/self/primary/Fonts:/usr/share/fonts/wpsm --mount=/storage/self/primary/AppFiles/Fonts:/usr/share/fonts/yozom --mount=/system/fonts:/usr/share/fonts/androidm --mount=/storage/self/primary/Pictures:/home/tiny/图片 --mount=/storage/self/primary/Music:/home/tiny/音乐 --mount=/storage/self/primary/Movies:/home/tiny/视频 --mount=/storage/self/primary/Download:/home/tiny/下载 --mount=/storage/self/primary/DCIM:/home/tiny/照片 --mount=/storage/self/primary/Documents:/home/tiny/文档 --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/.tmoe-container.stat:/proc/stat --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/.tmoe-container.version:/proc/version --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/bus:/proc/bus --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/buddyinfo:/proc/buddyinfo --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/cgroups:/proc/cgroups --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/consoles:/proc/consoles --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/crypto:/proc/crypto --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/devices:/proc/devices --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/diskstats:/proc/diskstats --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/execdomains:/proc/execdomains --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/fb:/proc/fb --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/filesystems:/proc/filesystems --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/interrupts:/proc/interrupts --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/iomem:/proc/iomem --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/ioports:/proc/ioports --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/kallsyms:/proc/kallsyms --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/keys:/proc/keys --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/key-users:/proc/key-users --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/kpageflags:/proc/kpageflags --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/loadavg:/proc/loadavg --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/locks:/proc/locks --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/misc:/proc/misc --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/modules:/proc/modules --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/pagetypeinfo:/proc/pagetypeinfo --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/partitions:/proc/partitions --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/sched_debug:/proc/sched_debug --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/softirqs:/proc/softirqs --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/timer_list:/proc/timer_list --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/uptime:/proc/uptime --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/vmallocinfo:/proc/vmallocinfo --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/vmstat:/proc/vmstat --mount=\$CONTAINER_DIR/usr/local/etc/tmoe-linux/proot_proc/zoneinfo:/proc/zoneinfo \$EXTRA_MOUNT /usr/bin/env -i HOSTNAME=TINY HOME=/home/tiny USER=tiny TERM=xterm-256color SDL_IM_MODULE=fcitx XMODIFIERS=@im=fcitx QT_IM_MODULE=fcitx GTK_IM_MODULE=fcitx TMOE_CHROOT=false TMOE_PROOT=true TMPDIR=/tmp MOZ_FAKE_NO_SANDBOX=1 QTWEBENGINE_DISABLE_SANDBOX=1 DISPLAY=:4 PULSE_SERVER=tcp:127.0.0.1:4718 LANG=zh_CN.UTF-8 SHELL=/bin/bash PATH=/usr/local/sbin:/usr/local/bin:/bin:/usr/bin:/sbin:/usr/sbin:/usr/games:/usr/local/games \$EXTRA_OPT /bin/bash -l";
+  static const String boot = "\$DATA_DIR/bin/proot -H --change-id=1000:1000 --pwd=/home/tiny --rootfs=\$CONTAINER_DIR --mount=/system --mount=/apex --mount=/sys --mount=/data --kill-on-exit --mount=/storage --sysvipc -L --link2symlink --mount=/proc --mount=/dev --mount=\$CONTAINER_DIR/tmp:/dev/shm --mount=/dev/urandom:/dev/random --mount=/proc/self/fd:/dev/fd --mount=/proc/self/fd/0:/dev/stdin --mount=/proc/self/fd/1:/dev/stdout --mount=/proc/self/fd/2:/dev/stderr --mount=/dev/null:/dev/tty0 --mount=/storage/self/primary:/media/sd --mount=\$DATA_DIR/share:/home/tiny/Public --mount=\$DATA_DIR/tiny:/home/tiny/.local/share/tiny --mount=/storage/self/primary/Fonts:/usr/share/fonts/wpsm --mount=/storage/self/primary/AppFiles/Fonts:/usr/share/fonts/yozom --mount=/system/fonts:/usr/share/fonts/androidm --mount=/storage/self/primary/Pictures:/home/tiny/Pictures --mount=/storage/self/primary/Music:/home/tiny/Music --mount=/storage/self/primary/Movies:/home/tiny/Videos --mount=/storage/self/primary/Download:/home/tiny/Downloads --mount=/storage/self/primary/DCIM:/home/tiny/Photos --mount=/storage/self/primary/Documents:/home/tiny/Documents /usr/bin/env -i HOME=/home/tiny USER=tiny LANG=en_US.UTF-8 TERM=xterm-256color PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin PULSE_SERVER=tcp:127.0.0.1:4718 DISPLAY=:4 /bin/su - tiny";
 
   static final ButtonStyle commandButtonStyle = OutlinedButton.styleFrom(
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -652,14 +652,13 @@ cat tmp3 | while read -r group_name group_id; do
 	fi
 done
 \$DATA_DIR/bin/busybox rm -rf xa* tmp1 tmp2 tmp3
-${Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? "" : "echo 'LANG=en_US.UTF-8' > \$CONTAINER_DIR/usr/local/etc/tmoe-linux/locale.txt"}
 """);
     //一些数据初始化
     //$DATA_DIR是数据文件夹, $CONTAINER_DIR是容器根目录
     //Termux:X11的启动命令并不在这里面，而是写死了。这下成💩山代码了:P
     await G.prefs.setStringList("containersInfo", ["""{
-"name":"Debian Trixie",
-"boot":"${Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? D.boot : D.boot.replaceFirst('LANG=zh_CN.UTF-8', 'LANG=en_US.UTF-8').replaceFirst('公共', 'Public').replaceFirst('图片', 'Pictures').replaceFirst('音乐', 'Music').replaceFirst('视频', 'Videos').replaceFirst('下载', 'Downloads').replaceFirst('文档', 'Documents').replaceFirst('照片', 'Photos')}",
+"name":"Arch Linux",
+"boot":"${D.boot}",
 "vnc":"startnovnc &",
 "vncUrl":"http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=12345678",
 "commands":${jsonEncode(Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? D.commands : D.commands4En)}
@@ -686,10 +685,9 @@ ${Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? "" : "ec
       final s = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
       final String w = (max(s.width, s.height) * 0.75).round().toString();
       final String h = (min(s.width, s.height) * 0.75).round().toString();
-      G.postCommand = """sed -i -E "s@(geometry)=.*@\\1=${w}x${h}@" /etc/tigervnc/vncserver-config-tmoe
-sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""";
+      G.postCommand = """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""";
       if (Localizations.localeOf(G.homePageStateContext).languageCode != 'zh') {
-        G.postCommand += "\nlocaledef -c -i en_US -f UTF-8 en_US.UTF-8";
+        G.postCommand += "\nsed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen";
         // For English users, assume they need to enable terminal write
         await G.prefs.setBool("isTerminalWriteEnabled", true);
         await G.prefs.setBool("isTerminalCommandsEnabled", true);
@@ -796,7 +794,7 @@ clear""");
   }
 
   static Future<void> launchGUIBackend() async {
-    Util.termWrite((Util.getGlobal("autoLaunchVnc") as bool)?((Util.getGlobal("useX11") as bool)?"""mkdir -p "\$HOME/.vnc" && bash /etc/X11/xinit/Xsession &> "\$HOME/.vnc/x.log" &""":Util.getCurrentProp("vnc")):"");
+    Util.termWrite((Util.getGlobal("autoLaunchVnc") as bool)?((Util.getGlobal("useX11") as bool)?"""mkdir -p "\$HOME/.vnc" && bash /etc/X11/xinit/xinitrc &> "\$HOME/.vnc/x.log" &""":Util.getCurrentProp("vnc")):"");
     Util.termWrite("clear");
   }
 
@@ -865,6 +863,28 @@ clear""");
       launchGUIBackend();
       waitForConnection().then((value) => G.wasAvncEnabled?launchAvnc():launchBrowser());
     }
+  }
+}
+
+class ShizukuHelper {
+  static bool _available = false;
+  
+  static Future<void> init() async {
+    try {
+      final result = await Process.run('sh', ['-c', 'command -v rish']);
+      _available = result.exitCode == 0;
+    } catch (_) {
+      _available = false;
+    }
+  }
+  
+  static bool get isAvailable => _available;
+  
+  static Future<ProcessResult> run(String command) async {
+    if (!_available) {
+      return Process.run('sh', ['-c', command]);
+    }
+    return Process.run('rish', ['-c', command]);
   }
 }
 

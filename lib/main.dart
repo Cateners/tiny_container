@@ -395,8 +395,7 @@ class _SettingPageState extends State<SettingPage> {
                     Navigator.of(context).pop();
                   }, child: Text(AppLocalizations.of(context)!.cancel)),
                   TextButton(onPressed:() async {
-                    Util.termWrite("""sed -i -E "s@(geometry)=.*@\\1=${w}x${h}@" /etc/tigervnc/vncserver-config-tmoe
-sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""");
+                    Util.termWrite("""sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""");
                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("${w}x${h}. ${AppLocalizations.of(context)!.applyOnNextLaunch}"))
@@ -557,7 +556,7 @@ sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""");
               G.pageIndex.value = 0;
             }),
             OutlinedButton(style: D.commandButtonStyle, child: Text(AppLocalizations.of(context)!.uninstallHangover), onPressed: () async {
-              Util.termWrite("sudo apt autoremove --purge -y hangover*");
+              Util.termWrite("sudo pacman -Rns --noconfirm hangover*");
               G.pageIndex.value = 0;
             }),
             OutlinedButton(style: D.commandButtonStyle, child: Text(AppLocalizations.of(context)!.clearWineData), onPressed: () async {
