@@ -142,6 +142,29 @@ class Util {
 
   static dynamic getCurrentProp(String key) {
     dynamic m = jsonDecode(Util.getGlobal("containersInfo")[G.currentContainer]);
+
+    // Migrate legacy hardcoded VNC password for existing users
+    if ((key == "vncUrl" || key == "vncUri" || key == "vncPassword") &&
+        !m.containsKey("vncPassword")) {
+      // No stored password yet — generate one and persist it
+      String newPass = generateRandomPassword();
+      addCurrentProp("vncPassword", newPass);
+      m["vncPassword"] = newPass;
+      // Also migrate any existing URLs that have the old password
+      if (m.containsKey("vncUrl")) {
+        String updatedUrl = m["vncUrl"].toString().replaceAll(
+            "password=12345678", "password=$newPass");
+        addCurrentProp("vncUrl", updatedUrl);
+        m["vncUrl"] = updatedUrl;
+      }
+      if (m.containsKey("vncUri")) {
+        String updatedUri = m["vncUri"].toString().replaceAll(
+            "VncPassword=12345678", "VncPassword=$newPass");
+        addCurrentProp("vncUri", updatedUri);
+        m["vncUri"] = updatedUri;
+      }
+    }
+
     if (m.containsKey(key)) {
       return m[key];
     }
@@ -149,8 +172,9 @@ class Util {
       case "name" : return (value){addCurrentProp(key, value); return value;}("Debian Trixie");
       case "boot" : return (value){addCurrentProp(key, value); return value;}(D.boot);
       case "vnc" : return (value){addCurrentProp(key, value); return value;}("startnovnc &");
-      case "vncUrl" : return (value){addCurrentProp(key, value); return value;}("http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=12345678");
-      case "vncUri" : return (value){addCurrentProp(key, value); return value;}("vnc://127.0.0.1:5904?VncPassword=12345678&SecurityType=2");
+      case "vncPassword" : return (value){addCurrentProp(key, value); return value;}(generateRandomPassword());
+      case "vncUrl" : return (value){addCurrentProp(key, value); return value;}("http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=${getCurrentProp("vncPassword")}");
+      case "vncUri" : return (value){addCurrentProp(key, value); return value;}("vnc://127.0.0.1:5904?VncPassword=${getCurrentProp("vncPassword")}&SecurityType=2");
       case "commands" : return (value){addCurrentProp(key, value); return value;}(jsonDecode(jsonEncode(D.commands)));
     }
   }
@@ -231,6 +255,15 @@ class Util {
       default:
         return AppLocalizations.of(context)!.projectUrl;
     }
+  }
+
+  static String generateRandomPassword() {
+    const chars =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    Random rnd = Random.secure();
+    return String.fromCharCodes(
+      Iterable.generate(8, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))),
+    );
   }
 
 }
@@ -654,11 +687,14 @@ done
     //一些数据初始化
     //$DATA_DIR是数据文件夹, $CONTAINER_DIR是容器根目录
     //Termux:X11的启动命令并不在这里面，而是写死了。这下成💩山代码了:P
+    String initialVncPassword = Util.generateRandomPassword();
     await G.prefs.setStringList("containersInfo", ["""{
 "name":"Arch Linux",
 "boot":"${D.boot}",
 "vnc":"startnovnc &",
-"vncUrl":"http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=12345678",
+"vncPassword":"$initialVncPassword",
+"vncUrl":"http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=$initialVncPassword",
+"vncUri":"vnc://127.0.0.1:5904?VncPassword=$initialVncPassword&SecurityType=2",
 "commands":${jsonEncode(Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? D.commands : D.commands4En)}
 }"""]);
     G.updateText.value = AppLocalizations.of(G.homePageStateContext)!.installationComplete;
@@ -683,7 +719,8 @@ done
       final s = WidgetsBinding.instance.platformDispatcher.views.first.physicalSize;
       final String w = (max(s.width, s.height) * 0.75).round().toString();
       final String h = (min(s.width, s.height) * 0.75).round().toString();
-      G.postCommand = """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""";
+      G.postCommand = """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)
+sed -i -E 's/echo "[^"]+" \\| vncpasswd -f/echo "${Util.getCurrentProp("vncPassword")}" | vncpasswd -f/g' \$(command -v startvnc) \$(command -v start-vnc) 2>/dev/null || true""";
       if (Localizations.localeOf(G.homePageStateContext).languageCode != 'zh') {
         G.postCommand += "\nsed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen";
         // For English users, assume they need to enable terminal write

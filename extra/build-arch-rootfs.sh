@@ -131,7 +131,7 @@ chmod +x ~/.xinitrc"
 export USER=tiny HOME=/home/tiny DISPLAY=:4
 vncserver -kill :4 2>/dev/null || true
 mkdir -p /home/tiny/.vnc
-echo "12345678" | vncpasswd -f > /home/tiny/.vnc/passwd
+echo "12345678" | vncpasswd -f > /home/tiny/.vnc/passwd # Placeholder password, will be replaced by the app at runtime
 chmod 600 /home/tiny/.vnc/passwd
 chown -R tiny:tiny /home/tiny/.vnc
 cat > /home/tiny/.vnc/xstartup << "XS"
