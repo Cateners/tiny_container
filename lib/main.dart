@@ -102,16 +102,14 @@ class MyApp extends StatelessWidget {
 //限制最大宽高比1:1
 class AspectRatioMax1To1 extends StatelessWidget {
   final Widget child;
-  //final double aspectRatio;
 
-  const AspectRatioMax1To1({super.key, required this.child/*, required this.aspectRatio*/});
+  const AspectRatioMax1To1({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
         final s = MediaQuery.of(context).size;
-        //double size = (s.width < s.height * aspectRatio) ? s.width : (s.height * aspectRatio);
         double size = s.width < s.height ? constraints.maxWidth : s.height;
 
         return Center(
