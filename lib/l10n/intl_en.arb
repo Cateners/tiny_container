@@ -96,6 +96,7 @@
   "enterGUI": "Enter GUI",
   "enterNumber": "Please enter a number",
   "enterValidNumber": "Please enter a valid number",
+  "enterNumberBetween": "Please enter a number between {min} and {max}",
   "installingBootPackage": "Installing Boot Package",
   "copyingContainerSystem": "Copying System Files",
   "installingContainerSystem": "Installing System Files",

@@ -96,6 +96,7 @@
   "enterGUI": "进入图形界面",
   "enterNumber": "请输入数字",
   "enterValidNumber": "请输入有效的数字",
+  "enterNumberBetween": "请输入{min}到{max}之间的数字",
   "installingBootPackage": "正在安装引导包",
   "copyingContainerSystem": "正在复制容器系统",
   "installingContainerSystem": "正在安装容器系统",

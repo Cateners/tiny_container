@@ -187,7 +187,7 @@ class Util {
       return AppLocalizations.of(G.homePageStateContext)!.enterValidNumber;
     }
     if (parsedValue < min || parsedValue > max) {
-      return "请输入$min到$max之间的数字";
+      return AppLocalizations.of(G.homePageStateContext)!.enterNumberBetween(min, max);
     }
     opr();
     return null;
