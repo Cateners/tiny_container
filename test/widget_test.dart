@@ -7,5 +7,7 @@ void main() {
     await tester.pumpWidget(const MyApp());
     // Verify the app builds without crashing
     expect(find.byType(MyApp), findsOneWidget);
+    // Let any pending timers from the app complete before the test ends
+    await tester.pumpAndSettle();
   });
 }
