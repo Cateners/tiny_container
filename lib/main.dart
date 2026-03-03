@@ -31,9 +31,9 @@ import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:xterm/xterm.dart';
 
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:tiny_computer/l10n/app_localizations.dart';
+import 'package:da_ripped_tiny_computer/l10n/app_localizations.dart';
 
-import 'package:tiny_computer/workflow.dart';
+import 'package:da_ripped_tiny_computer/workflow.dart';
 
 import 'package:avnc_flutter/avnc_flutter.dart';
 import 'package:x11_flutter/x11_flutter.dart';
