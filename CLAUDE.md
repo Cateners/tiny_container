@@ -40,7 +40,9 @@ flutter test test/validate_between_test.dart  # single test file
 
 ### Flutter App (`lib/`)
 - **`main.dart`** — App entry point, UI, terminal emulation (xterm), permissions, WebView for noVNC. Contains the main widget tree and display mode selection (noVNC/AVNC/Termux:X11).
-- **`workflow.dart`** — Container lifecycle: rootfs extraction, proot setup, VNC server management, Shizuku/rish integration. Contains the `Util` class (static helpers for file ops, shell execution, validation) and `G` class (static global state: paths, PTYs, current container index, BuildContext).
+- **`workflow.dart`** — Container lifecycle: rootfs extraction, proot setup, VNC server management, Shizuku/rish integration. Contains `G` (global state: paths, PTYs, current container index, BuildContext), `Util` (static helpers for file ops, shell execution, validation), `D` (defaults), and `Workflow` (async lifecycle methods).
+- **`settings.dart`** — `GlobalSettings` singleton wrapping SharedPreferences with typed property accessors and lazy default initialization.
+- **`models.dart`** — `ContainerInfo` and `CommandInfo` data classes with JSON serialization for container configuration.
 - **`l10n/`** — Localization (Chinese/English). Configured via `l10n.yaml` with `generate: true` in pubspec.
 
 ### Rootfs Build System (`extra/`)
@@ -68,5 +70,7 @@ flutter test test/validate_between_test.dart  # single test file
 ## Conventions
 
 - Original upstream code has Chinese comments; new code uses English.
-- The Dart package is named `da_ripped_tiny_computer` but imports use `package:da_ripped_tiny_computer/`. Some upstream references may still say `package:tiny_computer/`.
+- The Dart package is named `da_ripped_tiny_computer`; all internal imports use `package:da_ripped_tiny_computer/`.
+- `ShizukuHelper` accepts an injectable `processRunner` parameter (default `Process.run`) to support unit testing without spawning real processes.
+- `waitForXServer` accepts a mockable `isReadyCheck` callback parameter for testability.
 - The rootfs build script must run as root on an Arch/CachyOS host (or any Linux with qemu-user-static for cross-arch).

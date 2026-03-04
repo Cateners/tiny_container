@@ -412,9 +412,11 @@ Pre-installed in the Arch Linux ARM rootfs:
 
 ### 5.2 Black Screen After Setup
 
-**Symptom:** Setup completes but the display shows a black screen.
+**Symptom:** Setup completes but the display shows a black screen or the app hangs on the loading screen.
 
-**Possible causes and fixes:**
+**Fixed in v2.0.3 (Pixel 9 / Android 14):** A startup race where `Future.delayed(Duration.zero)` blocked the first Flutter frame, combined with missing `colorSchemeSeed` fallbacks in `DynamicColorBuilder`, caused a UI lockup on Pixel 9 and Android 14 devices. Update to **v2.0.3 or later** to resolve this.
+
+**Other possible causes and fixes:**
 
 | Cause | Fix |
 |---|---|
@@ -548,4 +550,4 @@ Submit bug reports at: https://github.com/DaRipper91/DaRipped_tiny_computer/issu
 
 ---
 
-*Manual version: 2.0.1 · Last updated: 2026-03-04*
+*Manual version: 2.0.3 · Last updated: 2026-03-04*

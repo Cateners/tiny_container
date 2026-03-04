@@ -63,6 +63,12 @@ On subsequent launches the container starts in seconds.
 
 ## Changelog
 
+### v2.0.3
+- **Fix:** Resolved Pixel 9 blank screen / hang on startup
+  - Replaced `Future.delayed(Duration.zero)` with `addPostFrameCallback` to avoid blocking the initial Flutter frame
+  - Added `colorSchemeSeed` fallbacks in `DynamicColorBuilder` to prevent UI lockups on Android 14
+  - Workflow initialization errors are now surfaced in the `LoadingPage` UI instead of failing silently
+
 ### v2.0.2
 - **New:** `GlobalSettings` and `ContainerInfo` classes replace raw SharedPreferences string parsing
 - **New:** `ShizukuHelper` refactored for testability with injectable `processRunner`
