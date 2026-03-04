@@ -99,7 +99,7 @@ class MyApp extends StatelessWidget {
 }
 
 
-//限制最大宽高比1:1
+// Limit maximum aspect ratio to 1:1
 class AspectRatioMax1To1 extends StatelessWidget {
   final Widget child;
 
