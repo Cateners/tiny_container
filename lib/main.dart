@@ -1326,7 +1326,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _initializeWorkflow() async {
-    await Workflow.workflow();
+    try {
+      await Workflow.workflow();
+    } catch (e, st) {
+      debugPrint('Workflow error: $e\n$st');
+    }
     if (mounted) {
       setState(() {
         isLoadingComplete = true;

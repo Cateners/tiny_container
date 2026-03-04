@@ -711,6 +711,11 @@ done
     
     G.prefs = await SharedPreferences.getInstance();
 
+    // Set currentContainer early so getCurrentProp is safe during first-time init.
+    // Use a direct prefs read (not Util.getGlobal) to avoid creating the key here,
+    // since the first-launch check below depends on the key being absent.
+    G.currentContainer = G.prefs.getInt("defaultContainer") ?? 0;
+
     await Util.execute("ln -sf ${await D.androidChannel.invokeMethod("getNativeLibraryPath", {})} ${G.dataPath}/applib");
 
     //如果没有这个key，说明是初次启动

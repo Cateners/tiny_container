@@ -1,57 +1,123 @@
 # DaRipped Tiny Computer — Arch Linux Edition
 
-**One-click Arch Linux desktop on Android, optimized for Pixel 9.**
+[![Latest Release](https://img.shields.io/github/v/release/DaRipper91/DaRipped_tiny_computer?label=Download&style=for-the-badge)](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](COPYING)
+[![Platform](https://img.shields.io/badge/Platform-Android%20ARM64-green?style=for-the-badge)](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
 
-This project is a modification of the upstream [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer), converting it from a Debian-based proot container to a streamlined Arch Linux ARM environment. It provides a full-featured Linux desktop (XFCE) that runs directly on Android devices without requiring root.
+**Full Arch Linux ARM desktop on Android — no root required. Optimized for Pixel 9.**
+
+A fork of [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer) converted from Debian to Arch Linux ARM. Bundles a complete XFCE desktop environment that launches directly from a single APK install.
+
+---
+
+## Installation
+
+1. Go to the [**Latest Release**](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
+2. Download `app-arm64-v8a-release.apk`
+3. Enable **"Install from unknown sources"** in Android Settings → Security
+4. Install and open the app
+5. Wait for the first-launch setup to complete (~5–15 minutes depending on storage speed)
+6. The XFCE desktop will appear in the built-in noVNC viewer
+
+> **Requirements:** Android 10+, ARM64 device, ~3 GB free storage
+
+---
 
 ## Features
 
--   **Full Arch Linux ARM Environment:** A complete Arch Linux desktop experience, with `pacman` for package management.
--   **One-Click Setup:** Simply install the APK, open the app, and the Arch Linux environment is automatically extracted and configured.
--   **High Performance:** Runs on a `proot` container, offering near-native performance for CLI and GUI applications.
--   **Multiple Display Options:**
-    -   In-app noVNC (via WebView) for convenience.
-    -   [AVNC](https://github.com/gujjwal00/avnc) for a richer, more feature-full VNC experience.
-    -   [Termux:X11](https://github.com/termux/termux-x11) for a native X11 server experience.
--   **Pixel 9 Optimized:** Includes defaults and configurations tailored for the Google Pixel 9's display and hardware.
--   **Shizuku/rish Integration (Optional):** For users with Shizuku, the app can leverage `rish` to gain ADB-level shell access for enhanced performance, such as faster rootfs extraction and higher process priority.
+- **Full Arch Linux ARM** — `pacman` package manager, AUR-compatible, rolling-release packages
+- **No root required** — runs entirely via `proot` userspace containerization
+- **One-tap setup** — rootfs is bundled in the APK; first launch extracts and configures everything automatically
+- **Three display backends:**
+  - Built-in **noVNC** (WebView) — works out of the box, no extra apps needed
+  - [**AVNC**](https://github.com/gujjwal00/avnc) — richer VNC client experience
+  - [**Termux:X11**](https://github.com/termux/termux-x11) — native X11 passthrough for lowest latency
+- **XFCE desktop** with Firefox pre-installed
+- **Pixel 9 optimized** — display resolution and DPI tuned for the Pixel 9 screen
+- **Optional Shizuku/rish integration** — if [Shizuku](https://shizuku.rikka.app/) is installed, the app uses `rish` for ADB-level shell access: faster extraction, higher process priority
+
+---
 
 ## How It Works
 
-The application bundles a complete Arch Linux ARM rootfs as a compressed asset. On first launch, the app:
-1.  Sets up a bootstrap environment with necessary binaries (`proot`, `busybox`, `tar`).
-2.  Extracts the Arch Linux ARM rootfs into the app's private data directory.
-3.  Launches a `proot` container, effectively running a Linux environment chrooted into the new rootfs.
-4.  Starts a VNC server and provides multiple clients for accessing the XFCE desktop environment.
+The APK bundles the Arch Linux ARM rootfs as split compressed assets (~1.1 GB). On first launch:
+
+1. Bootstraps necessary binaries (`proot`, `busybox`, `tar`) into the app's private data directory
+2. Reassembles and extracts the Arch Linux rootfs
+3. Launches a `proot` container (no kernel modifications needed)
+4. Starts TigerVNC server and serves the XFCE session
+5. Opens the desktop via the selected display backend (noVNC by default)
+
+On subsequent launches the container starts in seconds.
+
+---
 
 ## Pixel 9 & Shizuku Setup
 
--   **Display:** The app defaults to a VNC resolution and DPI suitable for the Pixel 9's screen.
--   **Shizuku:** If you have the [Shizuku app](https://shizuku.rikka.app/) installed and running, this application will automatically detect it. It will use Shizuku's `rish` shell to perform certain operations with elevated privileges, leading to a smoother and faster experience. This is completely optional, and the app will function normally without it.
+**Pixel 9:** The default VNC resolution and DPI are pre-configured for the Pixel 9's display. No manual tuning needed.
+
+**Shizuku:** Completely optional. If detected, the app uses Shizuku's `rish` for privileged operations — faster rootfs extraction and improved scheduling. The app works identically without it.
+
+---
+
+## Changelog
+
+### v2.0.1
+- **Fix:** Resolved first-launch hang at end of installation progress bar
+  - `LateInitializationError` on `G.currentContainer` caused a silent crash before the container ever started
+  - Added proper error handling in the workflow initializer to prevent the loading screen from freezing permanently
+
+### v2.0.0
+- Initial release: Arch Linux ARM replacing upstream Debian rootfs
+- XFCE + TigerVNC + Firefox + noVNC bundled
+- Shizuku/rish optional integration
+- Termux:X11 and AVNC display backend support
+
+---
 
 ## Building from Source
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/DaRipper91/DaRipped_tiny_computer.git
-    cd DaRipped_tiny_computer
-    ```
+### Prerequisites
 
-2.  **Build the Rootfs:** The Arch Linux ARM rootfs is not included in the repository. You must build it yourself using the provided script. This requires a Linux machine with `sudo` and `systemd-nspawn`.
-    ```bash
-    sudo ./extra/build-arch-rootfs.sh
-    ```
+- Linux host (Arch/CachyOS recommended) with `sudo`, `systemd-nspawn`, `qemu-user-static`
+- Flutter SDK ≥ 3.41
+- Android SDK with API 34+ and build-tools
 
-3.  **Copy Assets:** The build script will create a series of `x*` files (e.g., `xaa`, `xab`) in the `extra/archroot-build/output` directory. Copy all of these files into the `assets/` directory of the Flutter project. You will need to remove the existing `assets.zip` placeholder first.
+### 1. Clone
 
-4.  **Build the APK:**
-    ```bash
-    flutter build apk --target-platform android-arm64 --split-per-abi --release
-    ```
-    The resulting APK will be in `build/app/outputs/flutter-apk/`.
+```bash
+git clone https://github.com/DaRipper91/DaRipped_tiny_computer.git
+cd DaRipped_tiny_computer
+```
+
+### 2. Build the rootfs
+
+```bash
+sudo ./extra/build-arch-rootfs.sh [--xfce|--lxqt] [--split-size SIZE]
+```
+
+Output goes to `extra/archroot-build/output/` as split chunks (`xaa`, `xab`, …). Copy them to `assets/`.
+
+### 3. Build the APK
+
+```bash
+flutter pub get
+flutter build apk --target-platform android-arm64 --split-per-abi --release
+```
+
+Output: `build/app/outputs/flutter-apk/app-arm64-v8a-release.apk`
+
+---
 
 ## Credits
 
--   **Upstream:** This project would not be possible without the excellent work done by Caten Hu on the original [tiny_computer](https://github.com/Cateners/tiny_computer).
--   **Proot & Termux:** The core container technology is powered by `proot` and other tools from the [Termux](https://termux.dev/en/) ecosystem.
--   **Arch Linux ARM:** For providing the base rootfs for aarch64 devices.
+- [**Cateners/tiny_computer**](https://github.com/Cateners/tiny_computer) — the upstream project this is forked from
+- [**Termux**](https://termux.dev/en/) — `proot`, `busybox`, and bootstrap tooling
+- [**Arch Linux ARM**](https://archlinuxarm.org/) — the base rootfs for aarch64
+- [**TigerVNC**](https://tigervnc.org/) / [**noVNC**](https://novnc.com/) — VNC server and in-app browser client
+
+---
+
+## License
+
+[GNU General Public License v3.0](COPYING)
