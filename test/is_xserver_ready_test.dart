@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:da_ripped_tiny_computer/workflow.dart';
 
@@ -17,16 +18,25 @@ void main() {
     });
 
     test('returns false when connection fails (connection refused)', () async {
-      // Try to connect to a port that is likely unused
-      final isReady = await Util.isXServerReady('127.0.0.1', 59999, timeoutSeconds: 1);
+      final isReady = await Util.isXServerReady(
+        '127.0.0.1',
+        59999,
+        timeoutSeconds: 1,
+        connectSocket: (host, port, {timeout}) async =>
+            throw const SocketException('Connection refused'),
+      );
 
       expect(isReady, isFalse);
     });
 
     test('returns false when connection times out', () async {
-      // Try to connect to an unreachable IP to trigger a timeout
-      // 10.255.255.255 is a generic non-routable address that typically results in a timeout
-      final isReady = await Util.isXServerReady('10.255.255.255', 80, timeoutSeconds: 1);
+      final isReady = await Util.isXServerReady(
+        '10.255.255.255',
+        80,
+        timeoutSeconds: 1,
+        connectSocket: (host, port, {timeout}) async =>
+            throw TimeoutException('Connection timed out'),
+      );
 
       expect(isReady, isFalse);
     });

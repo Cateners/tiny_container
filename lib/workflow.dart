@@ -256,9 +256,12 @@ class Util {
     String host,
     int port, {
     int timeoutSeconds = 5,
+    Future<Socket> Function(dynamic host, int port, {Duration? timeout})?
+    connectSocket,
   }) async {
+    final connect = connectSocket ?? Socket.connect;
     try {
-      final socket = await Socket.connect(
+      final socket = await connect(
         host,
         port,
         timeout: Duration(seconds: timeoutSeconds),
@@ -1160,7 +1163,8 @@ class ShizukuHelper {
     bool runInShell,
     Encoding? stdoutEncoding,
     Encoding? stderrEncoding,
-  }) processRunner = Process.run;
+  })
+  processRunner = Process.run;
 
   static Future<void> init() async {
     try {
