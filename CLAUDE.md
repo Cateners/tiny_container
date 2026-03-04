@@ -66,12 +66,12 @@ flutter test test/validate_between_test.dart  # single test file
 
 - Tests that use `Util` or localized strings need a `MaterialApp` with full localization delegates and a `Builder` that sets `G.homePageStateContext`. See `test/validate_between_test.dart` for the pattern.
 - Import test files with `package:da_ripped_tiny_computer/` (the actual Dart package name), not `package:tiny_computer/`.
-- Test files: `validate_between_test.dart`, `create_dir_test.dart`, `is_xserver_ready_test.dart`, `shizuku_helper_test.dart`, `wait_for_x_server_test.dart`.
+- Test files: `validate_between_test.dart`, `create_dir_test.dart`, `is_xserver_ready_test.dart`, `shizuku_helper_test.dart`, `wait_for_x_server_test.dart`, `workflow_term_write_test.dart`, `workflow_test/add_current_prop_test.dart`.
 
 ## Conventions
 
 - Original upstream code has Chinese comments; new code uses English.
 - The Dart package is named `da_ripped_tiny_computer`; all internal imports use `package:da_ripped_tiny_computer/`.
-- `ShizukuHelper` accepts an injectable `processRunner` parameter (default `Process.run`) to support unit testing without spawning real processes.
+- `ShizukuHelper` accepts an injectable `processRunner` parameter (default `Process.run`). Its `run(String executable, List<String> arguments)` method execs directly when Shizuku is unavailable, or POSIX-single-quote-escapes all arguments into a `rish -c` string when Shizuku is active, preventing command injection.
 - `waitForXServer` accepts a mockable `isReadyCheck` callback parameter for testability.
 - The rootfs build script must run as root on an Arch/CachyOS host (or any Linux with qemu-user-static for cross-arch).

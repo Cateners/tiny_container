@@ -44,7 +44,7 @@ Only four Dart source files drive the entire app:
   - `Util` — Static helpers: file/asset ops, shell execution via PTY, `validateBetween` (form validator). `Util.getGlobal(key)` delegates to `G.settings.getGlobal(key)`.
   - `D` — Default values: default boot command, shortcut command lists (Chinese & English variants), default VNC/virgl/HiDPI options.
   - `Workflow` — Static async methods for first-time setup, bootstrap install, rootfs extraction, VNC start/stop.
-  - `ShizukuHelper` — Shizuku/rish integration with injectable `processRunner` for testability.
+  - `ShizukuHelper` — Shizuku/rish integration with injectable `processRunner` for testability. `run(String executable, List<String> arguments)` either execs directly (no Shizuku) or POSIX-single-quote-escapes arguments into a `rish -c` string to prevent command injection.
 - **`settings.dart`** — `GlobalSettings` singleton: typed property getters for every SharedPreferences key with automatic default-on-first-read. Never access `G.prefs` directly for known keys — use `Util.getGlobal(key)` or `G.settings.<property>`.
 - **`models.dart`** — `ContainerInfo` and `CommandInfo` data classes for container JSON serialization. `ContainerInfo` preserves unknown JSON fields in `additionalProps` for forward compatibility.
 - **`l10n/`** — Flutter gen-l10n localization (English + Simplified/Traditional Chinese). Template: `lib/l10n/intl_en.arb`.

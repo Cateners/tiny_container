@@ -63,6 +63,12 @@ On subsequent launches the container starts in seconds.
 
 ## Changelog
 
+### Unreleased (on master)
+- **Security:** `ShizukuHelper.run` signature changed to `run(String executable, List<String> arguments)` — arguments are now POSIX-single-quote-escaped before being passed to `rish -c`, preventing command injection via shell metacharacters
+- **Tests:** `Util.termWrite` coverage (`workflow_term_write_test.dart`)
+- **Tests:** `Util.addCurrentProp` coverage (`workflow_test/add_current_prop_test.dart`)
+- **Tests:** `isXServerReady` refactored for fully deterministic assertions
+
 ### v2.0.3
 - **Fix:** Resolved Pixel 9 blank screen / hang on startup
   - Replaced `Future.delayed(Duration.zero)` with `addPostFrameCallback` to avoid blocking the initial Flutter frame
