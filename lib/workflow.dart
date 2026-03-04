@@ -913,9 +913,21 @@ clear""");
 class ShizukuHelper {
   static bool _available = false;
   
+  @visibleForTesting
+  static Future<ProcessResult> Function(
+    String executable,
+    List<String> arguments, {
+    String? workingDirectory,
+    Map<String, String>? environment,
+    bool includeParentEnvironment,
+    bool runInShell,
+    Encoding? stdoutEncoding,
+    Encoding? stderrEncoding,
+  }) processRunner = Process.run;
+
   static Future<void> init() async {
     try {
-      final result = await Process.run('sh', ['-c', 'command -v rish']);
+      final result = await processRunner('sh', ['-c', 'command -v rish']);
       _available = result.exitCode == 0;
     } catch (_) {
       _available = false;
@@ -926,9 +938,9 @@ class ShizukuHelper {
   
   static Future<ProcessResult> run(String command) async {
     if (!_available) {
-      return Process.run('sh', ['-c', command]);
+      return processRunner('sh', ['-c', command]);
     }
-    return Process.run('rish', ['-c', command]);
+    return processRunner('rish', ['-c', command]);
   }
 }
 
