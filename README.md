@@ -3,6 +3,7 @@
 [![Latest Release](https://img.shields.io/github/v/release/DaRipper91/DaRipped_tiny_computer?label=Download&style=for-the-badge)](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg?style=for-the-badge)](COPYING)
 [![Platform](https://img.shields.io/badge/Platform-Android%20ARM64-green?style=for-the-badge)](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
+[![Manual](https://img.shields.io/badge/📖_Manual-read_now-blue?style=for-the-badge)](MANUAL.md)
 
 **Full Arch Linux ARM desktop on Android — no root required. Optimized for Pixel 9.**
 
@@ -61,6 +62,14 @@ On subsequent launches the container starts in seconds.
 ---
 
 ## Changelog
+
+### v2.0.2
+- **New:** `GlobalSettings` and `ContainerInfo` classes replace raw SharedPreferences string parsing
+- **New:** `ShizukuHelper` refactored for testability with injectable `processRunner`
+- **New:** `waitForXServer` accepts a mockable `isReadyCheck` parameter
+- **Tests:** Added unit tests for `isXServerReady`, `createDirFromString`, `waitForXServer`, `ShizukuHelper`, and extended `validateBetween` edge cases
+- **Code health:** Chinese doc comments translated to English; dead code removed
+- 📖 [Full documentation in MANUAL.md](MANUAL.md)
 
 ### v2.0.1
 - **Fix:** Resolved first-launch hang at end of installation progress bar
