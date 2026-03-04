@@ -1,4 +1,4 @@
-package com.example.tiny_computer
+package com.daripper91.daripped
 
 import android.content.Intent
 import android.net.Uri
@@ -7,7 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import com.example.tiny_computer.databinding.ActivitySignal9Binding
+import com.daripper91.daripped.databinding.ActivitySignal9Binding
 
 class Signal9Activity : AppCompatActivity() {
 

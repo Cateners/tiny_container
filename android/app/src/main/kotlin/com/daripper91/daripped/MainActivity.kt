@@ -1,4 +1,4 @@
-package com.example.tiny_computer
+package com.daripper91.daripped
 
 import android.system.Os.setenv
 

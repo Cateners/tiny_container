@@ -42,8 +42,8 @@
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <provider
-            android:name="com.example.tiny_computer.filepicker.TinyDocumentsProvider"
-            android:authorities="com.example.tiny_computer.documents"
+            android:name="com.daripper91.daripped.filepicker.TinyDocumentsProvider"
+            android:authorities="com.daripper91.daripped.documents"
             android:exported="true"
             android:grantUriPermissions="true"
             android:permission="android.permission.MANAGE_DOCUMENTS">

@@ -1,4 +1,4 @@
-package com.example.tiny_computer.filepicker;
+package com.daripper91.daripped.filepicker;
 
 import android.annotation.TargetApi;
 import android.content.res.AssetFileDescriptor;
@@ -13,7 +13,7 @@ import android.provider.DocumentsContract.Root;
 import android.provider.DocumentsProvider;
 import android.webkit.MimeTypeMap;
 
-import com.example.tiny_computer.R;
+import com.daripper91.daripped.R;
 
 import java.io.File;
 import java.io.FileNotFoundException;

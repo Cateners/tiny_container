@@ -1,4 +1,4 @@
-package com.example.tiny_computer
+package com.daripper91.daripped
 
 import android.content.Context
 import com.google.android.material.color.DynamicColors
