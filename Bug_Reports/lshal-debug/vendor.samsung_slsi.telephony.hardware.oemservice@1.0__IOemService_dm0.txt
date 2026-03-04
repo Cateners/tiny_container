@@ -1,1 +1,0 @@
-*** command 'lshal debug -E vendor.samsung_slsi.telephony.hardware.oemservice@1.0::IOemService/dm0' failed: exit code 128

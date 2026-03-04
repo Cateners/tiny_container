@@ -1,1 +1,0 @@
-*** command 'lshal debug -E vendor.samsung_slsi.telephony.hardware.radioExternal@1.1::IOemSlsiRadioExternal/rilExternal' failed: exit code 128

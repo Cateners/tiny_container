@@ -67,3 +67,6 @@ lib/l10n/app_localizations*
 # Configuration files
 android/keystore.properties
 android/local.properties
+# Large bug report files
+Bug_Reports/bugreport-*.txt
+Bug_Reports/dumpstate_board.bin

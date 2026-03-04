@@ -1,1 +1,0 @@
-*** command 'lshal debug -E android.hidl.allocator@1.0::IAllocator/ashmem' failed: exit code 128

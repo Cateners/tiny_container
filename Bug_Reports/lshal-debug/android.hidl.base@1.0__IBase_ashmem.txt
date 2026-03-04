@@ -1,1 +1,0 @@
-*** command 'lshal debug -E android.hidl.base@1.0::IBase/ashmem' failed: exit code 128
