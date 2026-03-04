@@ -169,7 +169,7 @@ class Util {
         return (value) {
           addCurrentProp(key, value);
           return value;
-        }("startnovnc &");
+        }("start-desktop &");
       case "vncPassword":
         return (value) {
           addCurrentProp(key, value);
@@ -887,7 +887,7 @@ done
       """{
 "name":"Arch Linux",
 "boot":"${D.boot}",
-"vnc":"startnovnc &",
+"vnc":"start-desktop &",
 "vncPassword":"$initialVncPassword",
 "vncUrl":"http://localhost:36082/vnc.html?host=localhost&port=36082&autoconnect=true&resize=remote&password=$initialVncPassword",
 "vncUri":"vnc://127.0.0.1:5904?VncPassword=$initialVncPassword&SecurityType=2",
@@ -929,8 +929,8 @@ done
       final String w = (max(s.width, s.height) * 0.75).round().toString();
       final String h = (min(s.width, s.height) * 0.75).round().toString();
       G.postCommand =
-          """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)
-sed -i -E 's/echo "[^"]+" \\| vncpasswd -f/echo "${Util.getCurrentProp("vncPassword")}" | vncpasswd -f/g' \$(command -v startvnc) \$(command -v start-vnc) 2>/dev/null || true""";
+          """sed -i -E "s@-geometry [0-9]+x[0-9]+@-geometry ${w}x${h}@g" \$(command -v start-vnc) 2>/dev/null || true
+sed -i -E 's/echo "[^"]+" \\| vncpasswd -f/echo "${Util.getCurrentProp("vncPassword")}" | vncpasswd -f/g' \$(command -v start-vnc) 2>/dev/null || true""";
       if (Localizations.localeOf(G.homePageStateContext).languageCode != 'zh') {
         G.postCommand +=
             "\nsed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen";

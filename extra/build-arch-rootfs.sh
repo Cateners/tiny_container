@@ -162,6 +162,8 @@ start-novnc
 echo "Desktop ready — VNC :5904 / noVNC :36082"
 SCRIPT
     chmod +x /usr/local/bin/start-desktop
+    # Backward-compat alias for any saved container configs using the old name
+    ln -sf /usr/local/bin/start-desktop /usr/local/bin/startnovnc
 '
 
 # Step 7: Clean up
