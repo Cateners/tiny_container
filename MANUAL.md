@@ -438,10 +438,12 @@ Pre-installed in the Arch Linux ARM rootfs:
    ```
 2. If not running, start it:
    ```bash
-   startnovnc &
+   start-desktop &
    ```
 3. Check the VNC port is correct — default is `5901` (VNC) / `36081` (noVNC HTTP)
 4. Make sure no firewall rule on Android is blocking localhost connections (rare but possible on some custom ROMs)
+
+**Fixed in v2.0.6:** Versions before v2.0.6 called `startnovnc` (no hyphen) which does not exist in the Arch rootfs, causing VNC to fail immediately with exit code 127. Update to v2.0.6 or later.
 
 ---
 
@@ -550,4 +552,4 @@ Submit bug reports at: https://github.com/DaRipper91/DaRipped_tiny_computer/issu
 
 ---
 
-*Manual version: 2.0.5 · Last updated: 2026-03-04*
+*Manual version: 2.0.6 · Last updated: 2026-03-04*

@@ -63,6 +63,16 @@ On subsequent launches the container starts in seconds.
 
 ## Changelog
 
+### v2.0.6
+- **Fix:** VNC fails to start — exit code 127 on `startnovnc` (command not found)
+  - The Arch rootfs ships `start-desktop`, `start-vnc`, and `start-novnc`; no `startnovnc` (no hyphen) was ever created
+  - Default VNC command changed from `startnovnc &` → `start-desktop &`
+  - Backward-compat symlink `startnovnc → start-desktop` added to rootfs builder for existing container configs
+- **Fix:** VNC resolution not applied on first launch
+  - The `sed` patch was searching for a `VNC_RESOLUTION=` variable that does not exist in the Arch `start-vnc` script
+  - Resolution patch now correctly targets the inline `-geometry WxH` flag in the `vncserver` call
+- **Chore:** Android package ID renamed from `com.fct.da_ripped_tiny_computer` to `com.daripper91.daripped`
+
 ### v2.0.5
 - **Fix:** Added missing `assets/patch.tar.gz` — the overlay archive mounted into the container at `~/.local/share/tiny` was absent from previous builds, causing container customizations and shortcuts to be missing on first launch
 - **Chore:** Renamed `tiny_computer_debug_report.md` → `DEBUG_REPORT.md`
