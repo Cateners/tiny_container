@@ -70,7 +70,26 @@ class Util {
   static Future<int> execute(String str) async {
     Pty pty = Pty.start("/system/bin/sh");
     pty.write(const Utf8Encoder().convert("$str\nexit \$?\n"));
-    return await pty.exitCode;
+    StreamSubscription<Uint8List>? sub;
+    if (G.showAdvancedLogs.value) {
+      sub = pty.output.listen((data) {
+        final text = const Utf8Decoder(allowMalformed: true).convert(data);
+        if (text.isEmpty) return;
+        final newLines =
+            text.split('\n').where((l) => l.isNotEmpty).toList();
+        if (newLines.isEmpty) return;
+        final updated = [...G.logLines.value, ...newLines];
+        // Limit to 500 lines to avoid unbounded memory growth
+        G.logLines.value = updated.length > 500
+            ? updated.sublist(updated.length - 500)
+            : updated;
+      });
+    }
+    try {
+      return await pty.exitCode;
+    } finally {
+      await sub?.cancel();
+    }
   }
 
   // POSIX single-quote escape — safe to embed in any sh -c string.
@@ -758,6 +777,8 @@ class G {
     true,
   ); //更改值，用于刷新启动命令
   static ValueNotifier<String> updateText = ValueNotifier("小小电脑"); //加载界面的说明文字
+  static ValueNotifier<bool> showAdvancedLogs = ValueNotifier(false); // Whether to show the log console
+  static ValueNotifier<List<String>> logLines = ValueNotifier([]); // Captured PTY output lines
   static String postCommand = ""; //第一次进入容器时额外运行的命令
 
   static bool wasAvncEnabled = false;
@@ -881,6 +902,8 @@ chmod 1777 tmp
 
   //初次启动要做的事情
   static Future<void> initForFirstTime() async {
+    // Clear log lines before starting so the log view shows only current session.
+    G.logLines.value = [];
     //首先设置bootstrap
     G.updateText.value = AppLocalizations.of(
       G.homePageStateContext,
@@ -977,6 +1000,9 @@ done
 
     G.settings = GlobalSettings();
     await G.settings.init(G.prefs);
+
+    // Sync the showAdvancedLogs notifier so the LoadingPage reacts immediately.
+    G.showAdvancedLogs.value = G.settings.advancedLogs;
 
     await Util.execute(
       "ln -sf ${Util.escapeShellArgument(await D.androidChannel.invokeMethod("getNativeLibraryPath", {}) as String)} ${Util.escapeShellArgument(G.dataPath)}/applib",

@@ -119,5 +119,8 @@
   "desktopXfceDesc": "經典、功能豐富的桌面環境，相容性最佳。",
   "desktopLxqt": "LXQt",
   "desktopLxqtDesc": "輕量級現代 Qt 桌面環境，記憶體佔用更低。",
-  "selectThisDesktop": "選擇"
+  "selectThisDesktop": "選擇",
+  "advancedLogs": "進階日誌",
+  "advancedLogsHint": "在安裝和啟動過程中顯示即時終端輸出",
+  "advancedLogsWaiting": "等待輸出..."
 }

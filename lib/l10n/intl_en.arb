@@ -119,5 +119,8 @@
   "desktopXfceDesc": "Classic, feature-rich desktop. Best compatibility.",
   "desktopLxqt": "LXQt",
   "desktopLxqtDesc": "Lightweight, modern Qt-based desktop. Lower RAM usage.",
-  "selectThisDesktop": "Select"
+  "selectThisDesktop": "Select",
+  "advancedLogs": "Advanced Logs",
+  "advancedLogsHint": "Show real-time shell output during installation and boot",
+  "advancedLogsWaiting": "Waiting for output..."
 }

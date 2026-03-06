@@ -53,6 +53,9 @@ class GlobalSettings {
               _setDouble("avncScaleFactor", -0.5))
           .clamp(-1.0, 1.0);
   bool get useX11 => prefs.getBool("useX11") ?? _setBool("useX11", true);
+  bool get advancedLogs =>
+      prefs.getBool("advancedLogs") ?? _setBool("advancedLogs", false);
+  set advancedLogs(bool value) => prefs.setBool("advancedLogs", value);
   // "xfce" or "lxqt" — empty string means not yet chosen (first launch)
   String get selectedDE =>
       prefs.getString("selectedDE") ?? "";
@@ -153,6 +156,8 @@ class GlobalSettings {
         return avncScaleFactor;
       case "useX11":
         return useX11;
+      case "advancedLogs":
+        return advancedLogs;
       case "defaultVirglCommand":
         return defaultVirglCommand;
       case "defaultVirglOpt":

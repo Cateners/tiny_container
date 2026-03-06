@@ -510,6 +510,19 @@ class _SettingPageState extends State<SettingPage> {
                   },
                 ),
                 const SizedBox.square(dimension: 8),
+                SwitchListTile(
+                  title: Text(AppLocalizations.of(context)!.advancedLogs),
+                  subtitle: Text(
+                    AppLocalizations.of(context)!.advancedLogsHint,
+                  ),
+                  value: Util.getGlobal("advancedLogs") as bool,
+                  onChanged: (value) {
+                    G.prefs.setBool("advancedLogs", value);
+                    G.showAdvancedLogs.value = value;
+                    setState(() {});
+                  },
+                ),
+                const SizedBox.square(dimension: 8),
                 const Divider(height: 2, indent: 8, endIndent: 8),
                 const SizedBox.square(dimension: 16),
                 Text(AppLocalizations.of(context)!.restartRequiredHint),
@@ -1689,6 +1702,68 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   }
 }
 
+// Displays a scrollable, auto-scrolling console log of PTY output during
+// the extraction and bootstrap phases.
+class LogView extends StatefulWidget {
+  const LogView({super.key});
+
+  @override
+  State<LogView> createState() => _LogViewState();
+}
+
+class _LogViewState extends State<LogView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    G.logLines.addListener(_onLogUpdate);
+  }
+
+  void _onLogUpdate() {
+    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scrollController.hasClients) {
+        _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    G.logLines.removeListener(_onLogUpdate);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      padding: const EdgeInsets.all(8),
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        child: ValueListenableBuilder<List<String>>(
+          valueListenable: G.logLines,
+          builder: (context, lines, _) => SelectableText(
+            lines.isEmpty
+                ? AppLocalizations.of(context)!.advancedLogsWaiting
+                : lines.join('\n'),
+            style: const TextStyle(
+              color: Colors.greenAccent,
+              fontFamily: 'monospace',
+              fontSize: 10,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class LoadingPage extends StatelessWidget {
   const LoadingPage({super.key});
   @override
@@ -1719,18 +1794,26 @@ class LoadingPage extends StatelessWidget {
               ),
             ),
             const FakeLoadingStatus(),
-            const Expanded(
+            Expanded(
               child: Padding(
-                padding: EdgeInsets.all(8),
-                child: Card(
-                  child: Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Scrollbar(
-                      child: SingleChildScrollView(
-                        child: InfoPage(openFirstInfo: true),
+                padding: const EdgeInsets.all(8),
+                child: ValueListenableBuilder<bool>(
+                  valueListenable: G.showAdvancedLogs,
+                  builder: (context, showLogs, _) {
+                    if (showLogs) {
+                      return const LogView();
+                    }
+                    return const Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Scrollbar(
+                          child: SingleChildScrollView(
+                            child: InfoPage(openFirstInfo: true),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
               ),
             ),
