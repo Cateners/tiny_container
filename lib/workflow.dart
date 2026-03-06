@@ -73,6 +73,17 @@ class Util {
     return await pty.exitCode;
   }
 
+  // POSIX single-quote escape — safe to embed in any sh -c string.
+  // Mirrors ShizukuHelper._escapeArg.
+  static String escapeShellArgument(String arg) =>
+      "'${arg.replaceAll("'", "'\\''")}'";
+
+  // Fire-and-forget background process (for long-running daemons like
+  // virgl_test_server and getifaddrs_bridge_server).
+  static void executeBackground(String str) {
+    Process.start("/system/bin/sh", ["-c", str]);
+  }
+
   static void termWrite(String str) {
     G.termPtys[G.currentContainer]!.pty.write(
       const Utf8Encoder().convert("$str\n"),
@@ -968,7 +979,7 @@ done
     await G.settings.init(G.prefs);
 
     await Util.execute(
-      "ln -sf ${await D.androidChannel.invokeMethod("getNativeLibraryPath", {})} ${G.dataPath}/applib",
+      "ln -sf ${Util.escapeShellArgument(await D.androidChannel.invokeMethod("getNativeLibraryPath", {}) as String)} ${Util.escapeShellArgument(G.dataPath)}/applib",
     );
 
     //如果没有这个key，说明是初次启动
@@ -1067,8 +1078,8 @@ exit
     String extraMount = ""; //mount options and other proot options
     String extraOpt = "";
     if (Util.getGlobal("getifaddrsBridge")) {
-      Util.execute(
-        "${G.dataPath}/bin/getifaddrs_bridge_server ${G.dataPath}/containers/${G.currentContainer}/tmp/.getifaddrs-bridge",
+      Util.executeBackground(
+        "${Util.escapeShellArgument('${G.dataPath}/bin/getifaddrs_bridge_server')} ${Util.escapeShellArgument('${G.dataPath}/containers/${G.currentContainer}/tmp/.getifaddrs-bridge')}",
       );
       extraOpt +=
           "LD_PRELOAD=/home/tiny/.local/share/tiny/extra/getifaddrs_bridge_client_lib.so ";
@@ -1077,13 +1088,13 @@ exit
       extraOpt += "${Util.getGlobal("defaultHidpiOpt")} ";
     }
     if (Util.getGlobal("virgl")) {
-      Util.execute(
+      Util.executeBackground(
         """
-export DATA_DIR=${G.dataPath}
+export DATA_DIR=${Util.escapeShellArgument(G.dataPath)}
 export PATH=\$DATA_DIR/bin:\$PATH
 export LD_LIBRARY_PATH=\$DATA_DIR/lib
 export CONTAINER_DIR=\$DATA_DIR/containers/${G.currentContainer}
-${G.dataPath}/bin/virgl_test_server ${Util.getGlobal("defaultVirglCommand")}""",
+\$DATA_DIR/bin/virgl_test_server ${(Util.getGlobal("defaultVirglCommand").toString()).split(' ').where((s) => s.isNotEmpty).map(Util.escapeShellArgument).join(' ')}""",
       );
       extraOpt += "${Util.getGlobal("defaultVirglOpt")} ";
     }
