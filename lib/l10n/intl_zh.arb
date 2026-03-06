@@ -23,7 +23,7 @@
   "terminalMaxLines": "终端最大行数(重启软件生效)",
   "pulseaudioPort": "pulseaudio接收端口",
   "enableTerminal": "启用终端",
-  "enableTerminalKeypad": "启用终端小键盘",
+  "enableTerminalKeykeypad": "启用终端小键盘",
   "terminalStickyKeys": "终端粘滞键",
   "keepScreenOn": "屏幕常亮",
   "restartRequiredHint": "以下选项修改后将在下次启动软件时生效。",
@@ -122,5 +122,6 @@
   "selectThisDesktop": "选择",
   "advancedLogs": "高级日志",
   "advancedLogsHint": "在安装和启动过程中显示实时终端输出",
-  "advancedLogsWaiting": "等待输出..."
+  "advancedLogsWaiting": "等待输出...",
+  "shellCommandWarning": "⚠ 该字段将作为 Shell 命令执行，仅在了解其含义的情况下修改。"
 }

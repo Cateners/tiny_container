@@ -35,6 +35,7 @@ fi
 
 # Step 2: Extract base rootfs
 echo "[2/8] Extracting base rootfs..."
+sudo rm -rf "$ROOTFS"
 mkdir -p "$ROOTFS"
 sudo tar xzf ArchLinuxARM-aarch64-latest.tar.gz -C "$ROOTFS"
 
@@ -44,26 +45,29 @@ sudo systemd-nspawn -D "$ROOTFS" --bind-ro=/etc/resolv.conf /bin/bash -c '
     # Initialize pacman
     pacman-key --init
     pacman-key --populate archlinuxarm
-    
+
     # Enable parallel downloads and color
     sed -i "s/#ParallelDownloads = 5/ParallelDownloads = 5/" /etc/pacman.conf
     sed -i "s/#Color/Color/" /etc/pacman.conf
 
-    # Disable sandbox (Landlock not available inside nspawn container)
-    sed -i "s/^#\?DisableSandbox.*/DisableSandbox/" /etc/pacman.conf
-    grep -q "^DisableSandbox" /etc/pacman.conf || echo "DisableSandbox" >> /etc/pacman.conf
+    # Disable sandbox (Landlock/Seccomp not available inside nspawn container)
+    sed -i "s/#DisableSandboxFilesystem/DisableSandboxFilesystem/" /etc/pacman.conf
+    sed -i "s/#DisableSandboxSyscalls/DisableSandboxSyscalls/" /etc/pacman.conf
+    # Also handle the generic DisableSandbox if present
+    sed -i "s/#DisableSandbox/DisableSandbox/" /etc/pacman.conf
 
     # Create vconsole.conf to prevent mkinitcpio warning
     touch /etc/vconsole.conf
 
     # Full system update
-    pacman -Syu --noconfirm
+    pacman -Syu --noconfirm --overwrite "*"
 '
+
 
 # Step 4: Install desktop environments (both installed; user picks one at first launch)
 echo "[4/8] Installing desktop environments..."
 sudo systemd-nspawn -D "$ROOTFS" --bind-ro=/etc/resolv.conf /bin/bash -c "
-    pacman -S --noconfirm \
+    pacman -S --noconfirm --overwrite '*' \
         xfce4 xfce4-goodies xfce4-terminal \
         lxqt openbox \
         tigervnc \

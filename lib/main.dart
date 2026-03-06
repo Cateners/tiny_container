@@ -307,6 +307,8 @@ class _SettingPageState extends State<SettingPage> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: AppLocalizations.of(context)!.startupCommand,
+                        helperText: AppLocalizations.of(context)!.shellCommandWarning,
+                        helperMaxLines: 3,
                       ),
                       onChanged: (value) async {
                         await Util.setCurrentProp("boot", value);
@@ -321,6 +323,9 @@ class _SettingPageState extends State<SettingPage> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: AppLocalizations.of(context)!.vncStartupCommand,
+                    helperText:
+                        AppLocalizations.of(context)!.shellCommandWarning,
+                    helperMaxLines: 3,
                   ),
                   onChanged: (value) async {
                     await Util.setCurrentProp("vnc", value);
@@ -720,7 +725,7 @@ class _SettingPageState extends State<SettingPage> {
                                       TextButton(
                                         onPressed: () async {
                                           Util.termWrite(
-                                            """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""",
+                                            """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x$h@" \$(command -v startvnc)""",
                                           );
                                           ScaffoldMessenger.of(
                                             context,
@@ -730,7 +735,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ).showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                "${w}x${h}. ${AppLocalizations.of(context)!.applyOnNextLaunch}",
+                                                "${w}x$h. ${AppLocalizations.of(context)!.applyOnNextLaunch}",
                                               ),
                                             ),
                                           );
