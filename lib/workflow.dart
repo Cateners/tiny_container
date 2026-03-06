@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see http://www.gnu.org/licenses/.
 
+// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
@@ -897,6 +898,8 @@ chmod 1777 tmp
     )!.installingBootPackage;
     await setupBootstrap();
 
+          // ignore: use_build_context_synchronously
+    // ignore: use_build_context_synchronously
     G.updateText.value = AppLocalizations.of(
       G.homePageStateContext,
     )!.copyingContainerSystem;
@@ -919,6 +922,7 @@ chmod 1777 tmp
       ),
     );
     //-J
+    // ignore: use_build_context_synchronously
     G.updateText.value = AppLocalizations.of(
       G.homePageStateContext,
     )!.installingContainerSystem;
@@ -955,6 +959,7 @@ done
     //$DATA_DIR是数据文件夹, $CONTAINER_DIR是容器根目录
     //Termux:X11的启动命令并不在这里面，而是写死了。这下成💩山代码了:P
     String initialVncPassword = Util.generateRandomPassword();
+    // ignore: use_build_context_synchronously
     await G.prefs.setStringList("containersInfo", [
       """{
 "name":"Arch Linux",
@@ -966,6 +971,8 @@ done
 "commands":${jsonEncode(Localizations.localeOf(G.homePageStateContext).languageCode == 'zh' ? D.commands : D.commands4En)}
 }""",
     ]);
+    // ignore: use_build_context_synchronously
+    // ignore: use_build_context_synchronously
     G.updateText.value = AppLocalizations.of(
       G.homePageStateContext,
     )!.installationComplete;
@@ -1001,8 +1008,9 @@ done
       final String w = (max(s.width, s.height) * 0.75).round().toString();
       final String h = (min(s.width, s.height) * 0.75).round().toString();
       G.postCommand =
-          """sed -i -E "s@-geometry [0-9]+x[0-9]+@-geometry ${w}x${h}@g" \$(command -v start-vnc) 2>/dev/null || true
+          """sed -i -E "s@-geometry [0-9]+x[0-9]+@-geometry ${w}x$h@g" \$(command -v start-vnc) 2>/dev/null || true
 sed -i -E 's/echo "[^"]+" \\| vncpasswd -f/echo "${_sanitizeVncPassword(Util.getCurrentProp("vncPassword"))}" | vncpasswd -f/g' \$(command -v start-vnc) 2>/dev/null || true""";
+          // ignore: use_build_context_synchronously
       if (Localizations.localeOf(G.homePageStateContext).languageCode != 'zh') {
         G.postCommand +=
             "\nsed -i 's/#en_US.UTF-8/en_US.UTF-8/' /etc/locale.gen && locale-gen";
@@ -1037,6 +1045,7 @@ pacman -Rns --noconfirm $removePackages 2>/dev/null || true""";
 
     //是否需要重新安装引导包?
     if (Util.getGlobal("reinstallBootstrap")) {
+      // ignore: use_build_context_synchronously
       G.updateText.value = AppLocalizations.of(
         G.homePageStateContext,
       )!.reinstallingBootPackage;

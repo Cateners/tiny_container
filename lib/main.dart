@@ -712,7 +712,7 @@ class _SettingPageState extends State<SettingPage> {
                                       TextButton(
                                         onPressed: () async {
                                           Util.termWrite(
-                                            """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x${h}@" \$(command -v startvnc)""",
+                                            """sed -i -E "s@^(VNC_RESOLUTION)=.*@\\1=${w}x$h@" \$(command -v startvnc)""",
                                           );
                                           ScaffoldMessenger.of(
                                             context,
@@ -722,7 +722,7 @@ class _SettingPageState extends State<SettingPage> {
                                           ).showSnackBar(
                                             SnackBar(
                                               content: Text(
-                                                "${w}x${h}. ${AppLocalizations.of(context)!.applyOnNextLaunch}",
+                                                "${w}x$h. ${AppLocalizations.of(context)!.applyOnNextLaunch}",
                                               ),
                                             ),
                                           );
