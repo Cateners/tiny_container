@@ -2,7 +2,7 @@
 
 Flutter Android app that runs a full Arch Linux ARM (XFCE) desktop on Android without root, via proot + VNC. Fork of [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer), converted from Debian to Arch Linux ARM.
 
-**Target:** Android ARM64 (optimized for Pixel 9) · **License:** GPLv3
+**Target:** Android ARM64 (optimized for Pixel 9) · **minSdk:** 28 (Android 9) · **targetSdk:** 34 · **License:** GPLv3
 
 ---
 
@@ -14,7 +14,12 @@ flutter pub get
 
 # Build APK (ARM64 only)
 flutter build apk --target-platform android-arm64 --split-per-abi --release
+# With obfuscation (matches build.ps1 release workflow):
+flutter build apk --target-platform android-arm64 --split-per-abi --release --obfuscate --split-debug-info=tiny_computer/sdi
 # Output: build/app/outputs/flutter-apk/
+
+# Release signing: create android/keystore.properties based on android/keystore.properties.example
+# (storeFile, storePassword, keyAlias, keyPassword). Without it, release signing will fail.
 
 # Lint / static analysis
 flutter analyze
@@ -28,6 +33,11 @@ flutter test test/validate_between_test.dart
 # Build the Arch Linux ARM rootfs (Linux host required, needs sudo + systemd-nspawn)
 sudo ./extra/build-arch-rootfs.sh [--xfce|--lxqt] [--split-size SIZE]
 # Output chunks go to extra/archroot-build/output/ → copy to assets/
+
+# Package rootfs and build APK on Windows (PowerShell):
+# .\build.ps1 xfce [lxqt] [-NameSuffix <suffix>]
+# Splits a pre-built tar.xz from C:\Users\29513\Downloads\ into 98MB xa* chunks,
+# copies them to assets/, then runs flutter build.
 ```
 
 ---
