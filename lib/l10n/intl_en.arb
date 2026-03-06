@@ -119,5 +119,6 @@
   "desktopXfceDesc": "Classic, feature-rich desktop. Best compatibility.",
   "desktopLxqt": "LXQt",
   "desktopLxqtDesc": "Lightweight, modern Qt-based desktop. Lower RAM usage.",
-  "selectThisDesktop": "Select"
+  "selectThisDesktop": "Select",
+  "shellCommandWarning": "⚠ This field executes as a shell command. Only modify if you know what you are doing."
 }

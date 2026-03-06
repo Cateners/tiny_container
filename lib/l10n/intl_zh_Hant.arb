@@ -119,5 +119,6 @@
   "desktopXfceDesc": "經典、功能豐富的桌面環境，相容性最佳。",
   "desktopLxqt": "LXQt",
   "desktopLxqtDesc": "輕量級現代 Qt 桌面環境，記憶體佔用更低。",
-  "selectThisDesktop": "選擇"
+  "selectThisDesktop": "選擇",
+  "shellCommandWarning": "⚠ 此欄位將作為 Shell 指令執行，請僅在了解其含義時修改。"
 }
