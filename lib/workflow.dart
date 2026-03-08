@@ -736,7 +736,7 @@ WINEDLLOVERRIDES="d3d8=b,d3d9=b,d3d10core=b,d3d11=b,dxgi=b" wine reg add 'HKEY_C
   ];
 
   static const String boot =
-      "\$DATA_DIR/bin/proot -H --change-id=1000:1000 --pwd=/home/tiny --rootfs=\$CONTAINER_DIR --mount=/system --mount=/apex --mount=/sys --mount=/data --kill-on-exit --mount=/storage --sysvipc -L --link2symlink --mount=/proc --mount=/dev --mount=\$CONTAINER_DIR/tmp:/dev/shm --mount=/dev/urandom:/dev/random --mount=/proc/self/fd:/dev/fd --mount=/proc/self/fd/0:/dev/stdin --mount=/proc/self/fd/1:/dev/stdout --mount=/proc/self/fd/2:/dev/stderr --mount=/dev/null:/dev/tty0 --mount=/storage/self/primary:/media/sd --mount=\$DATA_DIR/share:/home/tiny/Public --mount=\$DATA_DIR/tiny:/home/tiny/.local/share/tiny --mount=/storage/self/primary/Fonts:/usr/share/fonts/wpsm --mount=/storage/self/primary/AppFiles/Fonts:/usr/share/fonts/yozom --mount=/system/fonts:/usr/share/fonts/androidm --mount=/storage/self/primary/Pictures:/home/tiny/Pictures --mount=/storage/self/primary/Music:/home/tiny/Music --mount=/storage/self/primary/Movies:/home/tiny/Videos --mount=/storage/self/primary/Download:/home/tiny/Downloads --mount=/storage/self/primary/DCIM:/home/tiny/Photos --mount=/storage/self/primary/Documents:/home/tiny/Documents /usr/bin/env -i HOME=/home/tiny USER=tiny LANG=en_US.UTF-8 TERM=xterm-256color PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin PULSE_SERVER=tcp:127.0.0.1:4718 DISPLAY=:4 /bin/su - tiny";
+      "PROOT_NO_SECCOMP=1 \$DATA_DIR/bin/proot -H --change-id=1000:1000 --pwd=/home/tiny --rootfs=\$CONTAINER_DIR --mount=/system --mount=/apex --mount=/sys --mount=/data --kill-on-exit --mount=/storage --sysvipc -L --link2symlink --mount=/proc --mount=/dev --mount=/data/data/com.termux/files/usr/tmp:/tmp --mount=\$CONTAINER_DIR/tmp:/dev/shm --mount=/dev/urandom:/dev/random --mount=/proc/self/fd:/dev/fd --mount=/proc/self/fd/0:/dev/stdin --mount=/proc/self/fd/1:/dev/stdout --mount=/proc/self/fd/2:/dev/stderr --mount=/dev/null:/dev/tty0 --mount=/storage/self/primary:/media/sd --mount=\$DATA_DIR/share:/home/tiny/Public --mount=\$DATA_DIR/tiny:/home/tiny/.local/share/tiny --mount=/storage/self/primary/Fonts:/usr/share/fonts/wpsm --mount=/storage/self/primary/AppFiles/Fonts:/usr/share/fonts/yozom --mount=/system/fonts:/usr/share/fonts/androidm --mount=/storage/self/primary/Pictures:/home/tiny/Pictures --mount=/storage/self/primary/Music:/home/tiny/Music --mount=/storage/self/primary/Movies:/home/tiny/Videos --mount=/storage/self/primary/Download:/home/tiny/Downloads --mount=/storage/self/primary/DCIM:/home/tiny/Photos --mount=/storage/self/primary/Documents:/home/tiny/Documents \$EXTRA_MOUNT /usr/bin/env -i HOME=/home/tiny USER=tiny LANG=en_US.UTF-8 TERM=xterm-256color PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin PULSE_SERVER=tcp:127.0.0.1:4718 DISPLAY=:4 \$EXTRA_OPT /bin/bash /usr/local/bin/start-arch.sh";
 
   static final ButtonStyle commandButtonStyle = OutlinedButton.styleFrom(
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -961,7 +961,7 @@ export PROOT_TMP_DIR=\$DATA_DIR/proot_tmp
 export PROOT_LOADER=\$DATA_DIR/applib/libproot-loader.so
 export PROOT_LOADER_32=\$DATA_DIR/applib/libproot-loader32.so
 #export PROOT_L2S_DIR=\$CONTAINER_DIR/.l2s
-\$DATA_DIR/bin/proot --link2symlink sh -c "cat xa* | \$DATA_DIR/bin/tar x -J --delay-directory-restore --preserve-permissions -v -C containers/0"
+\$DATA_DIR/bin/proot --link2symlink sh -c "cat xa* | \$DATA_DIR/bin/tar x -z --delay-directory-restore --preserve-permissions -v -C containers/0"
 #Script from proot-distro
 chmod u+rw "\$CONTAINER_DIR/etc/passwd" "\$CONTAINER_DIR/etc/shadow" "\$CONTAINER_DIR/etc/group" "\$CONTAINER_DIR/etc/gshadow"
 echo "aid_\$(id -un):x:\$(id -u):\$(id -g):Termux:/:/sbin/nologin" >> "\$CONTAINER_DIR/etc/passwd"
@@ -1153,6 +1153,10 @@ export CONTAINER_DIR=\$DATA_DIR/containers/${G.currentContainer}
       extraOpt += "LANG=ja_JP.UTF-8 ";
     }
     extraMount += "--mount=\$DATA_DIR/tiny/font:/usr/share/fonts/tiny ";
+    extraMount +=
+        "--mount=\$DATA_DIR/tiny/extra/start-arch.sh:/usr/local/bin/start-arch.sh ";
+    extraMount +=
+        "--mount=\$DATA_DIR/tiny/extra/start-desktop:/usr/local/bin/start-desktop ";
     extraMount +=
         "--mount=\$DATA_DIR/tiny/extra/cmatrix:/home/tiny/.local/bin/cmatrix ";
     extraMount +=
