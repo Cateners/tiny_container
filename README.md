@@ -5,9 +5,9 @@
 [![Platform](https://img.shields.io/badge/Platform-Android%20ARM64-green?style=for-the-badge)](https://github.com/DaRipper91/DaRipped_tiny_computer/releases/latest)
 [![Manual](https://img.shields.io/badge/📖_Manual-read_now-blue?style=for-the-badge)](MANUAL.md)
 
-**Full Arch Linux ARM desktop on Android — no root required. Optimized for Pixel 9.**
+**Full Arch Linux ARM desktop on Android — no root required. Highly optimized for Pixel 9 and Tensor G4.**
 
-A fork of [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer) converted from Debian to Arch Linux ARM. Bundles a complete XFCE desktop environment that launches directly from a single APK install.
+A specialized workstation for intelligence and knowledge generation. This is a fork of [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer), fully migrated from Debian to Arch Linux ARM with modern Android 14 security bypasses.
 
 ---
 
@@ -18,143 +18,81 @@ A fork of [Cateners/tiny_computer](https://github.com/Cateners/tiny_computer) co
 3. Enable **"Install from unknown sources"** in Android Settings → Security
 4. Install and open the app
 5. Wait for the first-launch setup to complete (~5–15 minutes depending on storage speed)
-6. The XFCE desktop will appear in the built-in noVNC viewer
+6. The XFCE desktop will appear via the selected display backend
 
-> **Requirements:** Android 10+, ARM64 device, ~3 GB free storage
+> **Requirements:** Android 10+, ARM64 device, ~4 GB free storage
 
 ---
 
 ## Features
 
-- **Full Arch Linux ARM** — `pacman` package manager, AUR-compatible, rolling-release packages
-- **No root required** — runs entirely via `proot` userspace containerization
-- **One-tap setup** — rootfs is bundled in the APK; first launch extracts and configures everything automatically
-- **Three display backends:**
-  - Built-in **noVNC** (WebView) — works out of the box, no extra apps needed
-  - [**AVNC**](https://github.com/gujjwal00/avnc) — richer VNC client experience
-  - [**Termux:X11**](https://github.com/termux/termux-x11) — native X11 passthrough for lowest latency
-- **XFCE desktop** with Firefox pre-installed
-- **Pixel 9 optimized** — display resolution and DPI tuned for the Pixel 9 screen
-- **Optional Shizuku/rish integration** — if [Shizuku](https://shizuku.rikka.app/) is installed, the app uses `rish` for ADB-level shell access: faster extraction, higher process priority
+- **Full Arch Linux ARM** — `pacman` package manager, AUR support, optimized for Cortex-X4 (Tensor G4).
+- **Android 14+ Optimized** — Uses `PROOT_NO_SECCOMP=1` to bypass ptrace restrictions on modern kernels.
+- **Hardware Acceleration** — VirGL/Mali-G715 passthrough for fluid graphical performance.
+- **PipeWire Audio** — High-fidelity audio pipeline with advanced DSP support.
+- **Neural Workflow Ready** — Built-in templates for knowledge ingestion and Obsidian-ready vaults.
+- **One-tap setup** — Rootfs is bundled in the APK as high-performance GZIP chunks.
+- **Display Backends**:
+  - [**Termux:X11**](https://github.com/termux/termux-x11) — Native X11 passthrough (Recommended).
+  - Built-in **noVNC** (WebView) — Works out of the box.
+  - [**AVNC**](https://github.com/gujjwal00/avnc) — Native Android VNC client support.
 
 ---
 
-## How It Works
+## Architecture: The Bootstrap System
 
-The APK bundles the Arch Linux ARM rootfs as split compressed assets (~1.1 GB). On first launch:
+Because `systemd` is incompatible with `proot`, DaRipped uses a custom two-stage bootstrap:
 
-1. Bootstraps necessary binaries (`proot`, `busybox`, `tar`) into the app's private data directory
-2. Reassembles and extracts the Arch Linux rootfs
-3. Launches a `proot` container (no kernel modifications needed)
-4. Starts TigerVNC server and serves the XFCE session
-5. Opens the desktop via the selected display backend (noVNC by default)
-
-On subsequent launches the container starts in seconds.
-
----
-
-## Pixel 9 & Shizuku Setup
-
-**Pixel 9:** The default VNC resolution and DPI are pre-configured for the Pixel 9's display. No manual tuning needed.
-
-**Shizuku:** Completely optional. If detected, the app uses Shizuku's `rish` for privileged operations — faster rootfs extraction and improved scheduling. The app works identically without it.
+1. **`start-arch.sh`**: Handles kernel-level initialization, manual D-Bus system bus generation, and dynamic DNS injection from the Android host.
+2. **`start-desktop`**: Manages the XFCE session lifecycle, display socket synchronization, and HiDPI scaling logic.
 
 ---
 
 ## Changelog
 
+### v2.1.0 (Current)
+- **New Architecture:** Switched to a two-stage bootstrap system (`start-arch.sh` -> `start-desktop`) to bypass systemd crashes.
+- **Kernel Fix:** Injected `PROOT_NO_SECCOMP=1` to ensure stability on Android 14+ (Pixel 9).
+- **Performance:** Replaced XZ rootfs chunks with GZIP for faster extraction on high-speed UFS 4.0 storage.
+- **Graphics:** Optimized VirGL environment variables for the Mali-G715 (Tensor G4) GPU.
+- **Audio:** Migrated from PulseAudio to PipeWire for advanced userspace audio orchestration.
+- **Workflow:** Added `to_vault` intelligence sink and high-speed Rust-based parsing toolkit (`ripgrep`, `fd`, `fzf`).
+
 ### v2.0.7
-- **New:** Desktop environment selection dialog on first launch — choose XFCE4 or LXQt; the unchosen DE is purged on first container boot to reclaim ~400 MB
-- **New:** Termux:X11 is now the default display backend for new installs (lower latency than AVNC/noVNC)
-- **Note:** DE selection requires a rootfs rebuild with both DEs pre-installed; bundled rootfs update follows in v2.1.0
-
-### v2.0.6
-- **Fix:** VNC fails to start — exit code 127 on `startnovnc` (command not found)
-  - The Arch rootfs ships `start-desktop`, `start-vnc`, and `start-novnc`; no `startnovnc` (no hyphen) was ever created
-  - Default VNC command changed from `startnovnc &` → `start-desktop &`
-  - Backward-compat symlink `startnovnc → start-desktop` added to rootfs builder for existing container configs
-- **Fix:** VNC resolution not applied on first launch
-  - The `sed` patch was searching for a `VNC_RESOLUTION=` variable that does not exist in the Arch `start-vnc` script
-  - Resolution patch now correctly targets the inline `-geometry WxH` flag in the `vncserver` call
-- **Chore:** Android package ID renamed from `com.fct.da_ripped_tiny_computer` to `com.daripper91.daripped`
-
-### v2.0.5
-- **Fix:** Added missing `assets/patch.tar.gz` — the overlay archive mounted into the container at `~/.local/share/tiny` was absent from previous builds, causing container customizations and shortcuts to be missing on first launch
-- **Chore:** Renamed `tiny_computer_debug_report.md` → `DEBUG_REPORT.md`
-
-### v2.0.4
-- **Security:** `ShizukuHelper.run` signature changed to `run(String executable, List<String> arguments)` — arguments are now POSIX-single-quote-escaped before being passed to `rish -c`, preventing command injection via shell metacharacters
-- **Tests:** `Util.termWrite` coverage (`workflow_term_write_test.dart`)
-- **Tests:** `Util.addCurrentProp` coverage (`workflow_test/add_current_prop_test.dart`)
-- **Tests:** `isXServerReady` refactored for fully deterministic assertions
-
-### v2.0.3
-- **Fix:** Resolved Pixel 9 blank screen / hang on startup
-  - Replaced `Future.delayed(Duration.zero)` with `addPostFrameCallback` to avoid blocking the initial Flutter frame
-  - Added `colorSchemeSeed` fallbacks in `DynamicColorBuilder` to prevent UI lockups on Android 14
-  - Workflow initialization errors are now surfaced in the `LoadingPage` UI instead of failing silently
-
-### v2.0.2
-- **New:** `GlobalSettings` and `ContainerInfo` classes replace raw SharedPreferences string parsing
-- **New:** `ShizukuHelper` refactored for testability with injectable `processRunner`
-- **New:** `waitForXServer` accepts a mockable `isReadyCheck` parameter
-- **Tests:** Added unit tests for `isXServerReady`, `createDirFromString`, `waitForXServer`, `ShizukuHelper`, and extended `validateBetween` edge cases
-- **Code health:** Chinese doc comments translated to English; dead code removed
-- 📖 [Full documentation in MANUAL.md](MANUAL.md)
-
-### v2.0.1
-- **Fix:** Resolved first-launch hang at end of installation progress bar
-  - `LateInitializationError` on `G.currentContainer` caused a silent crash before the container ever started
-  - Added proper error handling in the workflow initializer to prevent the loading screen from freezing permanently
+- **New:** Desktop environment selection dialog on first launch — choose XFCE4 or LXQt.
+- **New:** Termux:X11 is now the default display backend for new installs.
 
 ### v2.0.0
-- Initial release: Arch Linux ARM replacing upstream Debian rootfs
-- XFCE + TigerVNC + Firefox + noVNC bundled
-- Shizuku/rish optional integration
-- Termux:X11 and AVNC display backend support
+- Initial release: Arch Linux ARM migration replacing upstream Debian rootfs.
 
 ---
 
 ## Building from Source
 
-### Prerequisites
-
-- Linux host (Arch/CachyOS recommended) with `sudo`, `systemd-nspawn`, `qemu-user-static`
-- Flutter SDK ≥ 3.41
-- Android SDK with API 34+ and build-tools
-
 ### 1. Clone
-
 ```bash
 git clone https://github.com/DaRipper91/DaRipped_tiny_computer.git
 cd DaRipped_tiny_computer
 ```
 
-### 2. Build the rootfs
-
-```bash
-sudo ./extra/build-arch-rootfs.sh [--xfce|--lxqt] [--split-size SIZE]
-```
-
-Output goes to `extra/archroot-build/output/` as split chunks (`xaa`, `xab`, …). Copy them to `assets/`.
-
-### 3. Build the APK
-
+### 2. Build the APK
+Ensure the Flutter SDK is in your path and target the `arm64-v8a` ABI:
 ```bash
 flutter pub get
-flutter build apk --target-platform android-arm64 --split-per-abi --release
+flutter build apk --release \
+    --target-platform android-arm64 \
+    --split-per-abi \
+    --obfuscate \
+    --split-debug-info=./debug_info
 ```
-
-Output: `build/app/outputs/flutter-apk/app-arm64-v8a-release.apk`
 
 ---
 
 ## Credits
 
-- [**Cateners/tiny_computer**](https://github.com/Cateners/tiny_computer) — the upstream project this is forked from
-- [**Termux**](https://termux.dev/en/) — `proot`, `busybox`, and bootstrap tooling
-- [**Arch Linux ARM**](https://archlinuxarm.org/) — the base rootfs for aarch64
-- [**TigerVNC**](https://tigervnc.org/) / [**noVNC**](https://novnc.com/) — VNC server and in-app browser client
+- [**Cateners/tiny_computer**](https://github.com/Cateners/tiny_computer) — The original upstream project.
+- [**Termux**](https://termux.dev/en/) — `proot`, `busybox`, and X11 tooling.
+- [**Arch Linux ARM**](https://archlinuxarm.org/) — The rolling-release base.
 
 ---
 
