@@ -2,8 +2,7 @@
 
 echo "正在更新软件包..."
 sudo apt update
-sudo apt upgrade -y
-
+sudo -E env DEBIAN_FRONTEND=noninteractive apt -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
 REPO="AndreRH/hangover"
 API_URL="https://api.github.com/repos/$REPO/releases/latest"
