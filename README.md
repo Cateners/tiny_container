@@ -48,6 +48,23 @@ What I won't do:
   No wish-listing please! If the community comes up with solutions, I may add them in.  
   As for other distros, you can actually check out the [images repo](https://github.com/tiny-computer/images) and give it a try yourself.
 
+## Download
+
+APKs are available on the [releases](https://github.com/Cateners/tiny_container/releases) page.
+
+## Build
+
+After cloning the repository, download the prebuilt library jniLibs.zip from the releases page and extract it to app/src/main/jniLibs/arm64-v8a. Then you can open and build the project normally in Android Studio.  
+For automatic container installation on first launch, rename your container to rootfs.tar.zst and place it in app/src/main/assets.  
+For container information, including how to make your own containers and some pre-built containers I've already prepared, check out [this](https://github.com/tiny-computer/images) repository.
+
+The jniLibs.zip prebuilt libraries come from my fork of [termux-packages](https://github.com/tiny-computer/termux-packages).  
+My main modifications there are:
+- scripts/generate-bootstraps.sh, to directly generate the required packages. I manually renamed the needed files to .so and packaged them. You should be able to easily see which .so files correspond to which files in the bootstraps.
+- packages/proot/build.sh, to use my fork of [proot](https://github.com/tiny-computer/proot-termux) (the changes there are a bit messy, nothing worth looking at).
+
+Other files may have minor modifications too, but those are usually just to get things compiling cleanly or to remove some Termux hard-coded paths.
+
 ## Documentation?
 
 Not ready yet — please wait just a little bit longer...

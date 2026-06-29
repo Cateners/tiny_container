@@ -48,6 +48,23 @@
   不要许愿！如果社区有了解决方案我可能会添加进来。  
   关于其他发行版，其实你可以参考[images仓库](https://github.com/tiny-computer/images)的说明自行尝试一下。
 
+## 下载
+
+apk安装包见[releases](https://github.com/Cateners/tiny_container/releases)页面
+
+## 编译
+
+克隆仓库后，在release页下载预编译库jniLibs.zip并解压到app/src/main/jniLibs/arm64-v8a，然后就可以正常在Android Studio打开项目编译了。  
+如果要做到启动时自动安装容器的效果，可把容器重命名为rootfs.tar.zst并放到app/src/main/assets。  
+容器的信息，包括如何制作容器以及一些我已经制作好的容器在[此](https://github.com/tiny-computer/images)仓库。
+
+jniLibs.zip预编译库来自我fork的[termux-packages](https://github.com/tiny-computer/termux-packages)仓库。  
+我主要修改了
+- scripts/generate-bootstraps.sh，以便直接生成需要的包。我手动重命名了需要的文件到so并将它们打包。你应该能很容易看出这些so文件对应bootstraps中的哪些文件。
+- packages/proot/build.sh，为了使用我fork的[proot](https://github.com/tiny-computer/proot-termux)（里面的修改有点脏，没什么好看的）。
+
+其他文件可能也有少量修改，但那通常是为了能顺利编译，或者去除一些termux路径硬编码。
+
 ## 文档？
 
 现在还没准备好呀，请再等待亿点时间......
